@@ -1,4 +1,10 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using Bramka.Server.Interfaces;
+using Bramka.Server.Services;
+using Bramka.Shared.DTOs.UserDTO;
+using Bramka.Shared.Interfaces.Services;
+using Bramka.Shared.Validations;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 namespace Bramka
 {
@@ -12,7 +18,14 @@ namespace Bramka
 
 
             builder.Services.AddSwaggerGen(options => { });
-            
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ILogService, LogService>();
+            builder.Services.AddScoped<IQrCodeService, QrCodeService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
+
+            builder.Services.AddFluentValidation();
+            builder.Services.AddTransient<IValidator<UserRegistrationDTO>, UserRegistrationValidation>();
+            builder.Services.AddTransient<IValidator<UserEditDTO>, UserEditValidation>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
@@ -39,7 +52,7 @@ namespace Bramka
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthorization();
 
             app.MapRazorPages();
             app.MapControllers();

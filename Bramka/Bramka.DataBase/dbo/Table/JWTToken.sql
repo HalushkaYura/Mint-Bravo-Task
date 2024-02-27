@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[JWTToken]
+(
+	[TokenId] INT NOT NULL PRIMARY KEY IDENTITY (1, 1), 
+    [Token] NVARCHAR(MAX) NOT NULL, 
+    [ExpirationDate] DATETIME NOT NULL, 
+    [UserId] UNIQUEIDENTIFIER NOT NULL,
+
+    FOREIGN KEY (UserId) REFERENCES [User](UserId) ON DELETE CASCADE
+
+);
