@@ -1,0 +1,133 @@
+﻿@media screen and (max-width: 767px) {
+    header {
+        display: none !important;
+    }
+
+    .mobile-header {
+        display: flex !important;
+    }
+}
+@media screen and (max-height: 600px) {
+    header {
+        img {
+            height: 10vh !important;
+        }
+    }
+
+    .mobile-header {
+        height: 20vh !important;
+
+        img {
+            height: 10vh !important;
+        }
+    }
+
+    .collapse, .collapsing {
+        .collapse-menu {
+            button {
+                width: 65vw !important;
+                height: 15vh !important;
+
+                img {
+                    height: 8vh !important;
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: 500px) {
+    .collapse, .collapsing {
+        .collapse-menu {
+            button {
+                width: 75vw !important;
+            }
+        }
+    }
+}
+span, h1, a {
+    color: white;
+}
+header {
+    display: flex;
+
+    img {
+        width: auto;
+        height: 5vh;
+        cursor: pointer;
+    }
+
+    span {
+        font-size: var(--s40);
+        font-weight: 500;
+    }
+
+    background-color: black;
+    border-bottom: 3px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(90deg, rgba(59,0,135,1) 0%, rgba(191,92,0,1) 55%, rgba(59,0,135,1) 100%);
+}
+
+.mobile-header {
+    display: flex;
+    align-items: center;
+    height: 10vh;
+    display: none;
+
+    img {
+        width: auto;
+        height: 5vh;
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: 5vw;
+    }
+
+    span {
+        font-size: var(--s40);
+        font-weight: 700;
+        margin-left: 5vw;
+    }
+
+    background-color: black;
+    border-bottom: 3px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(90deg, rgba(59,0,135,1) 0%, rgba(191,92,0,1) 55%, rgba(59,0,135,1) 100%);
+}
+
+.collapse, .collapsing {
+    position: absolute;
+    z-index: 1;
+    top: 10vh;
+    .collapse-menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100vw;
+        background-color: black;
+        padding-top: 6vh;
+        padding-bottom: 2vh;
+        box-shadow: 0 10px 10px black;
+
+        button {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            width: 70vw;
+            height: 10vh;
+            border: 2px solid white;
+            margin-bottom: 4vh;
+
+            img {
+                position: absolute;
+                left: 10vw;
+                height: 5vh;
+            }
+
+            span {
+                font-weight: 600;
+                font-size: var(--s24);
+            }
+        }
+    }
+}

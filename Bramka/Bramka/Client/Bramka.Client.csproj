@@ -18,8 +18,25 @@
 
 	<ItemGroup>
 		<Watch Include="**/*.scss" />
-		<Watch Remove="Pages\Counter.razor.scss" />
+		<None Remove="Pages\Components\Header.razor.scss" />
+		<Watch Remove="Pages\Components\Header.razor.scss" />
+		<Watch Remove="Pages\Index.razor.scss" />
+		<Watch Remove="Shared\MainLayout.razor.scss" />
+		<Content Include="Pages\Components\Header.razor.scss" />
 		<None Update="**/*.css" Watch="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\source\icons\.DS_Store" />
+	  <None Include="wwwroot\source\icons\Book.svg" />
+	  <None Include="wwwroot\source\icons\eye slash.svg" />
+	  <None Include="wwwroot\source\icons\eye.svg" />
+	  <None Include="wwwroot\source\icons\Menu.svg" />
+	  <None Include="wwwroot\source\icons\person-lines-fill.svg" />
+	  <None Include="wwwroot\source\icons\Qr Code.svg" />
+	  <None Include="wwwroot\source\icons\question-lg.svg" />
+	  <None Include="wwwroot\source\icons\settings.svg" />
+	  <None Include="wwwroot\source\icons\User.svg" />
 	</ItemGroup>
 	
 		<Target Name="CheckForNpm" BeforeTargets="RunNpmInstall">
