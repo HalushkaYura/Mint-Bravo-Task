@@ -5,6 +5,9 @@ using Bramka.Shared.Interfaces.Services;
 using Bramka.Shared.Validations;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using System.Data.SqlClient;
+using System.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace Bramka
 {
@@ -18,6 +21,12 @@ namespace Bramka
 
 
             builder.Services.AddSwaggerGen(options => { });
+            var configuration = builder.Configuration;
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            builder.Services.AddScoped<IDbConnection>(_ => new SqlConnection(connectionString));
+
+
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ILogService, LogService>();
             builder.Services.AddScoped<IQrCodeService, QrCodeService>();

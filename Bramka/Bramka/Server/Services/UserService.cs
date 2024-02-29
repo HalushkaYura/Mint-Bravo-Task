@@ -9,12 +9,13 @@ namespace Bramka.Server.Services
 {
     public class UserService : IUserService
     {
+        private readonly IDbConnection _connection;
+        public UserService(IDbConnection dbConnection)
+        {
+            _connection = dbConnection;
+        }
         public async Task<Guid> CreateUserAsync(UserRegistrationDTO newItem)
         {
-
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
             var passwordHash = HashPassword(newItem.Password);
 
             var parameters = new DynamicParameters(new
@@ -30,7 +31,7 @@ namespace Bramka.Server.Services
 
             parameters.Add("@UserId", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
-            await connection.ExecuteAsync(DataBaseConstants.CreateUser,
+            await _connection.ExecuteAsync(DataBaseConstants.CreateUser,
                 parameters,
                 commandType: CommandType.StoredProcedure);
 
@@ -47,11 +48,7 @@ namespace Bramka.Server.Services
         }
         public async Task<bool> DeleteUserAsync(Guid id)
         {
-
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var row = await connection.ExecuteAsync(DataBaseConstants.DeleteUser,
+            var row = await _connection.ExecuteAsync(DataBaseConstants.DeleteUser,
                 new { UserId = id }, commandType: CommandType.StoredProcedure);
 
             return row > 0;
@@ -60,19 +57,12 @@ namespace Bramka.Server.Services
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
 
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            return await connection.QueryAsync<User>(DataBaseConstants.GetAllUsers);
+            return await _connection.QueryAsync<User>(DataBaseConstants.GetAllUsers);
         }
 
         public async Task<User> GetUserByIdAsync(Guid id)
         {
-
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var user = await connection.QueryFirstOrDefaultAsync<User>(DataBaseConstants.GetUserById,
+            var user = await _connection.QueryFirstOrDefaultAsync<User>(DataBaseConstants.GetUserById,
                                                         new { UserId = id },
                                                         commandType: CommandType.StoredProcedure);
             if (user == null)
@@ -85,20 +75,13 @@ namespace Bramka.Server.Services
         public async Task<User?> GetLastUserAsync()
         {
 
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-
-            return await connection.QueryFirstOrDefaultAsync<User>(DataBaseConstants.GetLastUser, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<User>(DataBaseConstants.GetLastUser, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<bool> UpdateUserAsync(Guid id, UserEditDTO updateItem)
         {
 
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var rows = await connection.ExecuteAsync(DataBaseConstants.UpdateUser,
+            var rows = await _connection.ExecuteAsync(DataBaseConstants.UpdateUser,
                 new
                 {
                     UserId = id,
@@ -116,10 +99,7 @@ namespace Bramka.Server.Services
         {
             try
             {
-                using var connection = DataBaseConstants.GetConnection();
-                connection.Open();
-
-                var result = connection.QueryFirstOrDefault<User>(DataBaseConstants.CheckExistEmail, new { Email = email }, commandType: CommandType.StoredProcedure);
+                var result = _connection.QueryFirstOrDefault<User>(DataBaseConstants.CheckExistEmail, new { Email = email }, commandType: CommandType.StoredProcedure);
 
                 return result != null;
             }

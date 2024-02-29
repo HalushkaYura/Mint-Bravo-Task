@@ -4,10 +4,6 @@ namespace Bramka.Server.Constans
 {
     public class DataBaseConstants
     {
-        private const string ConnectionString = "Data Source=DESKTOP-CPV6M2H\\SQLEXPRESS;Initial Catalog=BramkaDb;Persist Security Info=True;User ID=sa;Password=123456789";
-        public static SqlConnection GetConnection()
-            => new SqlConnection(ConnectionString);
-
         #region Users
 
         public const string CreateUser = "sp_Users_CreateUser";

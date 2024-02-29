@@ -11,7 +11,11 @@ namespace Bramka.Server.Services
 {
     public class QrCodeService : IQrCodeService
     {
-
+        private readonly IDbConnection _connection;
+        public QrCodeService(IDbConnection dbConnection)
+        {
+            _connection = dbConnection;
+        }
         public async Task<int> CreateQrCodeAsync(QrCodeCreateDTO newQrCode)
         {
             if (!Enum.IsDefined(typeof(QrCodeTypes), newQrCode.Type))
@@ -19,8 +23,6 @@ namespace Bramka.Server.Services
                 throw new ArgumentException("Invalid QR code type.");
             }
 
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
             //Перевірка і де активування старого qr-code
             await DeactiveQrCode(newQrCode.UserId);
 
@@ -34,7 +36,7 @@ namespace Bramka.Server.Services
             });
             parameters.Add("@IdQrCode", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-            await connection.ExecuteAsync(DataBaseConstants.CreateQrCode,
+            await _connection.ExecuteAsync(DataBaseConstants.CreateQrCode,
                                             parameters,
                                             commandType: CommandType.StoredProcedure);
             return parameters.Get<int>("@IdQrCode");
@@ -45,9 +47,7 @@ namespace Bramka.Server.Services
             var activeCode = await GetLastQrCodeAsync(userId);
             if (activeCode != null && activeCode.ExpirationDate > DateTime.Now)
             {
-                using var connection = DataBaseConstants.GetConnection();
-                await connection.OpenAsync();
-                var row = await connection.ExecuteAsync(DataBaseConstants.UpdateQrCode,
+                var row = await _connection.ExecuteAsync(DataBaseConstants.UpdateQrCode,
                         new
                         {
                             activeCode.Type,
@@ -62,11 +62,7 @@ namespace Bramka.Server.Services
 
         public async Task<bool> DeleteQrCodeAsync(int qrCodeId)
         {
-
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var row = await connection.ExecuteAsync(DataBaseConstants.DeleteQrCode,
+            var row = await _connection.ExecuteAsync(DataBaseConstants.DeleteQrCode,
                 new { QrCodeId = qrCodeId }, commandType: CommandType.StoredProcedure);
 
             return row > 0;
@@ -75,19 +71,12 @@ namespace Bramka.Server.Services
         public async Task<IEnumerable<QrCode>> GetAllQrCodesAsync()
         {
 
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            return await connection.QueryAsync<QrCode>(DataBaseConstants.GetAllQrCodes);
+            return await _connection.QueryAsync<QrCode>(DataBaseConstants.GetAllQrCodes);
         }
 
         public async Task<QrCode?> GetLastQrCodeAsync(Guid? userId)
         {
-
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var qrCode = await connection.QueryFirstOrDefaultAsync<QrCode>(
+            var qrCode = await _connection.QueryFirstOrDefaultAsync<QrCode>(
                 DataBaseConstants.GetLastQrCode,
                 new
                 {
@@ -100,23 +89,15 @@ namespace Bramka.Server.Services
         public async Task<QrCode?> GetQrCodeByIdAsync(int? qrCodeId)
         {
 
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var qrCode = await connection.QueryFirstOrDefaultAsync<QrCode>(DataBaseConstants.GetQrCodeById,
+            var qrCode = await _connection.QueryFirstOrDefaultAsync<QrCode>(DataBaseConstants.GetQrCodeById,
                                                         new { QrCodeId = qrCodeId },
                                                         commandType: CommandType.StoredProcedure);
-
             return qrCode;
         }
 
         public async Task<IEnumerable<QrCode>> GetQrCodeByUserIdAsync(Guid userId)
         {
-
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var QrCode = await connection.QueryAsync<QrCode>(DataBaseConstants.GetAllQrCodeByUserId,
+            var QrCode = await _connection.QueryAsync<QrCode>(DataBaseConstants.GetAllQrCodeByUserId,
                 new { UserId = userId }, commandType: CommandType.StoredProcedure);
 
             return QrCode;
@@ -124,10 +105,7 @@ namespace Bramka.Server.Services
 
         public async Task<bool> UpdateQrCodeAsync(QrCode newQrCode, int id)
         {
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var row = await connection.ExecuteAsync(DataBaseConstants.UpdateQrCode,
+            var row = await _connection.ExecuteAsync(DataBaseConstants.UpdateQrCode,
                 new
                 {
                     QrCodeId = id,
@@ -146,10 +124,8 @@ namespace Bramka.Server.Services
             {
                 throw new InvalidOperationException("QR code has expired");
             }
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
 
-            var row = await connection.ExecuteAsync(DataBaseConstants.UpdateQrCodeUseDate,
+            var row = await _connection.ExecuteAsync(DataBaseConstants.UpdateQrCodeUseDate,
                 new
                 {
                     UseDate = DateTime.Now,

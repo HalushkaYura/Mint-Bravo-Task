@@ -8,12 +8,15 @@ namespace Bramka.Server.Services
 {
     public class LogService : ILogService
     {
+        private readonly IDbConnection _connection;
+        public LogService(IDbConnection dbConnection) 
+        {
+            _connection = dbConnection; 
+        }
         public async Task<bool> CreateLogAsync(Log newLog)
         {
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
 
-            var row = await connection.ExecuteAsync(DataBaseConstants.CreateLog,
+            var row = await _connection.ExecuteAsync(DataBaseConstants.CreateLog,
                 new
                 {
                     newLog.ActionType,
@@ -27,11 +30,7 @@ namespace Bramka.Server.Services
 
         public async Task<bool> DeleteLogAsync(int id)
         {
-
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var row = await connection.ExecuteAsync(DataBaseConstants.DeleteLog,
+            var row = await _connection.ExecuteAsync(DataBaseConstants.DeleteLog,
                 new { LogId = id }, commandType: CommandType.StoredProcedure);
 
             return row > 0;
@@ -39,11 +38,7 @@ namespace Bramka.Server.Services
 
         public async Task<Log> GeLogByIdAsync(int id)
         {
-
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var log = await connection.QueryFirstOrDefaultAsync<Log>(DataBaseConstants.GetLogById,
+            var log = await _connection.QueryFirstOrDefaultAsync<Log>(DataBaseConstants.GetLogById,
                                                        new { LogId = id },
                                                        commandType: CommandType.StoredProcedure);
             return log;
@@ -51,19 +46,12 @@ namespace Bramka.Server.Services
 
         public async Task<IEnumerable<Log>> GetAllLogsAsync()
         {
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            return await connection.QueryAsync<Log>(DataBaseConstants.GetAllLogs);
+            return await _connection.QueryAsync<Log>(DataBaseConstants.GetAllLogs);
         }
 
         public async Task<IEnumerable<Log>> GetLogByUserIdAsync(Guid userId)
         {
-
-            using var connection = DataBaseConstants.GetConnection();
-            await connection.OpenAsync();
-
-            var logs = await connection.QueryAsync<Log>(DataBaseConstants.GetAllLogByUserId,
+            var logs = await _connection.QueryAsync<Log>(DataBaseConstants.GetAllLogByUserId,
                 new { UserId = userId }, commandType: CommandType.StoredProcedure);
 
             return logs;
