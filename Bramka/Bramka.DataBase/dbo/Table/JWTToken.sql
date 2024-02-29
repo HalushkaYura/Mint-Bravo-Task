@@ -1,7 +1,8 @@
 ﻿CREATE TABLE [dbo].[JWTToken]
 (
 	[TokenId] INT NOT NULL PRIMARY KEY IDENTITY (1, 1), 
-    [Token] NVARCHAR(MAX) NOT NULL, 
+    [Token] NVARCHAR(MAX) NOT NULL,
+    [CreatedAt] DATETIME NOT NULL, 
     [ExpirationDate] DATETIME NOT NULL, 
     [UserId] UNIQUEIDENTIFIER NOT NULL,
 

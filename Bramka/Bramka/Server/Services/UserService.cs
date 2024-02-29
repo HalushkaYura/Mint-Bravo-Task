@@ -4,7 +4,6 @@ using Bramka.Shared.DTOs.UserDTO;
 using Bramka.Shared.Models;
 using Dapper;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace Bramka.Server.Services
 {
@@ -12,41 +11,35 @@ namespace Bramka.Server.Services
     {
         public async Task<Guid> CreateUserAsync(UserRegistrationDTO newItem)
         {
-            try
+
+            using var connection = DataBaseConstants.GetConnection();
+            await connection.OpenAsync();
+
+            var passwordHash = HashPassword(newItem.Password);
+
+            var parameters = new DynamicParameters(new
             {
-                using var connection = DataBaseConstants.GetConnection();
-                await connection.OpenAsync();
+                newItem.Name,
+                newItem.Surname,
+                newItem.Email,
+                newItem.PhoneNumber,
+                newItem.BirthDate,
+                PasswordHash = passwordHash,
+                newItem.RoleId
+            });
 
-                var passwordHash = HashPassword(newItem.Password);
+            parameters.Add("@UserId", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
-                var parameters = new DynamicParameters(new
-                {
-                    newItem.Name,
-                    newItem.Surname,
-                    newItem.Email,
-                    newItem.PhoneNumber,
-                    PasswordHash = passwordHash,
-                    CreatedAt = DateTime.Now,
-                    newItem.RoleId
-                });
+            await connection.ExecuteAsync(DataBaseConstants.CreateUser,
+                parameters,
+                commandType: CommandType.StoredProcedure);
 
-                parameters.Add("@UserId", dbType: DbType.Guid, direction: ParameterDirection.Output);
-
-                await connection.ExecuteAsync(DataBaseConstants.CreateUser,
-                    parameters,
-                    commandType: CommandType.StoredProcedure);
-
-                var userId = parameters.Get<Guid>("@UserId");
-                return userId;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error creating user: {ex.Message}");
-            }
+            var userId = parameters.Get<Guid>("@UserId");
+            return userId;
         }
         private string HashPassword(string password)
         {
-            if(password == null) 
+            if (password == null)
             {
                 throw new NullReferenceException($"Error: password can not be null!");
             }
@@ -54,97 +47,69 @@ namespace Bramka.Server.Services
         }
         public async Task<bool> DeleteUserAsync(Guid id)
         {
-            try
-            {
-                using var connection = DataBaseConstants.GetConnection();
-                await connection.OpenAsync();
 
-                    var row = await connection.ExecuteAsync(DataBaseConstants.DeleteUser,
-                        new { UserId = id }, commandType: CommandType.StoredProcedure);
+            using var connection = DataBaseConstants.GetConnection();
+            await connection.OpenAsync();
 
-                    return row > 0;
-                
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error deleting user: {ex.Message}");
-            }
+            var row = await connection.ExecuteAsync(DataBaseConstants.DeleteUser,
+                new { UserId = id }, commandType: CommandType.StoredProcedure);
+
+            return row > 0;
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            try
-            {
-                using var connection = DataBaseConstants.GetConnection();
-                await connection.OpenAsync();
 
-                return await connection.QueryAsync<User>(DataBaseConstants.GetAllUsers);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error getting all users: {ex.Message}");
-            }
+            using var connection = DataBaseConstants.GetConnection();
+            await connection.OpenAsync();
+
+            return await connection.QueryAsync<User>(DataBaseConstants.GetAllUsers);
         }
 
         public async Task<User> GetUserByIdAsync(Guid id)
         {
-           try
-            {
-                using var connection = DataBaseConstants.GetConnection();
-                await connection.OpenAsync();
 
-                var user = await connection.QueryFirstOrDefaultAsync<User>(DataBaseConstants.GetUserById,
-                                                            new { UserId = id },
-                                                            commandType: CommandType.StoredProcedure);
-                if (user == null)
-                {
-                    throw new NullReferenceException($"Error error not found user for id");
-                }
-                return user;
-            }
-            catch (Exception ex)
+            using var connection = DataBaseConstants.GetConnection();
+            await connection.OpenAsync();
+
+            var user = await connection.QueryFirstOrDefaultAsync<User>(DataBaseConstants.GetUserById,
+                                                        new { UserId = id },
+                                                        commandType: CommandType.StoredProcedure);
+            if (user == null)
             {
-                throw new Exception($"Error not found user for id: {ex.Message}");
+                throw new NullReferenceException($"Error error not found user for id");
             }
+            return user;
         }
 
-        public async Task<User> GetLastUserAsync()
+        public async Task<User?> GetLastUserAsync()
         {
-            try
-            {
-                using var connection = DataBaseConstants.GetConnection();
-                await connection.OpenAsync();
+
+            using var connection = DataBaseConstants.GetConnection();
+            await connection.OpenAsync();
 
 
-                return await connection.QueryFirstOrDefaultAsync<User>(DataBaseConstants.GetLastUser, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error getting all users: {ex.Message}");
-            }
+            return await connection.QueryFirstOrDefaultAsync<User>(DataBaseConstants.GetLastUser, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<bool> UpdateUserAsync(Guid id, UserEditDTO updateItem)
         {
-            try
-            {
-                using var connection = DataBaseConstants.GetConnection();
-                await connection.OpenAsync();
 
-                var rows =  await connection.ExecuteAsync(DataBaseConstants.UpdateUser, 
-                    new { UserId = id,
-                        updateItem.Name,
-                        updateItem.Surname,
-                        updateItem.Email,
-                        updateItem.PhoneNumber,
-                        updateItem.RoleId
-                    }, commandType: CommandType.StoredProcedure);
-                return rows > 0;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error updating users: {ex.Message}");
-            }
+            using var connection = DataBaseConstants.GetConnection();
+            await connection.OpenAsync();
+
+            var rows = await connection.ExecuteAsync(DataBaseConstants.UpdateUser,
+                new
+                {
+                    UserId = id,
+                    updateItem.Name,
+                    updateItem.Surname,
+                    //updateItem.Email,
+                    //PasswordHash = HashPassword(updateItem.Password),
+                    updateItem.PhoneNumber,
+                    updateItem.RoleId
+                }, commandType: CommandType.StoredProcedure);
+            return rows > 0;
         }
 
         public bool IsEmailExist(string email)
@@ -154,9 +119,9 @@ namespace Bramka.Server.Services
                 using var connection = DataBaseConstants.GetConnection();
                 connection.Open();
 
-                var result =  connection.QueryFirstOrDefault<User>(DataBaseConstants.CheckExistEmail, new { Email = email }, commandType: CommandType.StoredProcedure);
+                var result = connection.QueryFirstOrDefault<User>(DataBaseConstants.CheckExistEmail, new { Email = email }, commandType: CommandType.StoredProcedure);
 
-                return result != null; 
+                return result != null;
             }
             catch (Exception ex)
             {

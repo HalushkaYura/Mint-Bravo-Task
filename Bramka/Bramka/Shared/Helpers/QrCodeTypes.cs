@@ -9,7 +9,7 @@ namespace Bramka.Shared.Helpers
     public enum QrCodeTypes
     {
         AntiPanicMode,
-        FullFledged,
+        OpenGate,
         Exit,
         Entrance,
     }

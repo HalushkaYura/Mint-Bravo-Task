@@ -10,35 +10,21 @@ namespace Bramka.Server.Services
     {
         public async Task<IEnumerable<Role>> GetAllRolesAsync()
         {
-            try
-            {
-                using var connection = DataBaseConstants.GetConnection();
-                await connection.OpenAsync();
+            using var connection = DataBaseConstants.GetConnection();
+            await connection.OpenAsync();
 
-                return await connection.QueryAsync<Role>(DataBaseConstants.GetAllRoles);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error getting all roles: {ex.Message}");
-            }
+            return await connection.QueryAsync<Role>(DataBaseConstants.GetAllRoles);
         }
 
         public async Task<Role> GetRoleByIdAsync(int roleId)
         {
-            try
-            {
-                using var connection = DataBaseConstants.GetConnection();
-                await connection.OpenAsync();
+            using var connection = DataBaseConstants.GetConnection();
+            await connection.OpenAsync();
 
-                var role =  await connection.QueryFirstOrDefaultAsync<Role>(DataBaseConstants.GetRoleById,
-                                                            new { RoleId = roleId },
-                                                            commandType: CommandType.StoredProcedure);
-                return role;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error getting  role: {ex.Message}");
-            }
+            var role = await connection.QueryFirstOrDefaultAsync<Role>(DataBaseConstants.GetRoleById,
+                                                        new { RoleId = roleId },
+                                                        commandType: CommandType.StoredProcedure);
+            return role;
         }
     }
 }

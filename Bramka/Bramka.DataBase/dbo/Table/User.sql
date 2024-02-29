@@ -3,6 +3,7 @@
 	[UserId] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY ,     
     [Name] NVARCHAR(100) NOT NULL, 
     [Surname] NVARCHAR(100) NOT NULL, 
+    [BirthDate] DATETIME NOT NULL, 
     [PasswordHash] NVARCHAR(MAX) NOT NULL, 
     [Email] NVARCHAR(100) NOT NULL, 
     [IsInside] BIT NULL DEFAULT 0 , 

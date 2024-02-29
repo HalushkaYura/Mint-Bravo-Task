@@ -1,18 +1,13 @@
 ﻿using Bramka.Server.Interfaces;
 using Bramka.Shared.DTOs.UserDTO;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bramka.Shared.Validations
 {
     public class UserEditValidation : AbstractValidator<UserEditDTO>
     {
         private readonly IUserService _userService;
-        public UserEditValidation(IUserService userService) 
+        public UserEditValidation(IUserService userService)
         {
             _userService = userService;
 
@@ -26,11 +21,11 @@ namespace Bramka.Shared.Validations
                 .Length(3, 50);
 
 
-            RuleFor(user => user.Email)
-                .NotNull()
-                .EmailAddress()
-                .Must(IsUniqueUserEmail)
-                .WithMessage("{PropertyName} already exists.");
+            //RuleFor(user => user.Email)
+            //    .NotNull()
+            //    .EmailAddress()
+            //    .Must(IsUniqueUserEmail)
+            //    .WithMessage("{PropertyName} already exists.");
 
             RuleFor(user => user.PhoneNumber)
                 .NotEmpty().When(user => !string.IsNullOrWhiteSpace(user.PhoneNumber))
@@ -45,9 +40,9 @@ namespace Bramka.Shared.Validations
                 .WithMessage("Role must be selected.");
         }
 
-        private bool IsUniqueUserEmail(string email)
-        {
-            return !_userService.IsEmailExist(email);
-        }
+        //private bool IsUniqueUserEmail(string email)
+        //{
+        //    return !_userService.IsEmailExist(email);
+        //}
     }
 }

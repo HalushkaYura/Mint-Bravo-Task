@@ -2,7 +2,8 @@
     @UserId UNIQUEIDENTIFIER,
     @Name NVARCHAR(100),
     @Surname NVARCHAR(100),
-    @Email NVARCHAR(100),
+    --@Email NVARCHAR(100),
+    --@PasswordHash NVARCHAR(MAX),
     @PhoneNumber NVARCHAR(20),
     @RoleId INT
 AS
@@ -11,9 +12,10 @@ BEGIN
     SET
         [Name] = @Name,
         [Surname] = @Surname,
-        [Email] = @Email,
+        --[Email] = @Email,
         [PhoneNumber] = @PhoneNumber,
         [RoleId] = @RoleId
+        --[PasswordHash] = @PasswordHash
     WHERE
         [UserId] = @UserId;
 END;

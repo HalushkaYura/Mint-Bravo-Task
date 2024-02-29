@@ -26,6 +26,8 @@ namespace Bramka
             builder.Services.AddFluentValidation();
             builder.Services.AddTransient<IValidator<UserRegistrationDTO>, UserRegistrationValidation>();
             builder.Services.AddTransient<IValidator<UserEditDTO>, UserEditValidation>();
+            builder.Services.AddTransient<IValidator<UserSetPasswordDTO>, UserSetPasswordValidation>();
+
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();

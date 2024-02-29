@@ -13,8 +13,6 @@ namespace Bramka.Server.Interfaces
         Task<bool> DeleteUserAsync(Guid id);
         bool IsEmailExist(string email);
 
-        //Task<bool> IsHavePasswordAsync(string userId);
-
         //----------------------------------------------------------
         //Task UploadAvatar(UserImageUploadDTO imageDTO, string userId);
         //Task<string> GetUserImageAsync(string userId);
