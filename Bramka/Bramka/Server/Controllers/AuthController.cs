@@ -2,6 +2,7 @@
 using Bramka.Shared.DTOs.UserDTO;
 using Bramka.Shared.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bramka.Server.Controllers
@@ -30,6 +31,25 @@ namespace Bramka.Server.Controllers
             await _userService.CreateUserAsync(request);
 
             return Ok("User is successfully created");
+        }
+
+        [HttpPost("login")]
+        public ActionResult<string> Login(UserLoginDTO request)
+        {
+            User? user = _userService.GetUserByEmai
+
+            if (user is null)
+                return BadRequest("Wrong email or password");
+
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+                return BadRequest("Wrong email or password");
+
+            string token = CreateToken(user);
+
+            var refreshToken = GenerateRefreshToken();
+            SetRefreshToken(refreshToken, user);
+
+            return Ok(token);
         }
     }
 }
