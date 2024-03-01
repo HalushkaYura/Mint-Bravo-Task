@@ -1,9 +1,15 @@
 ﻿using Bramka.Server.Interfaces;
 using Bramka.Shared.DTOs.UserDTO;
+using Bramka.Shared.Interfaces.Services;
 using Bramka.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Bramka.Server.Controllers
 {
@@ -13,11 +19,13 @@ namespace Bramka.Server.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
 
-        public AuthController(IConfiguration configuration, IUserService userService)
+        public AuthController(IConfiguration configuration, IUserService userService, IRoleService roleService)
         {
             _configuration = configuration;
             _userService = userService;
+            _roleService = roleService;
         }
 
         [HttpPost("register")]
@@ -34,22 +42,85 @@ namespace Bramka.Server.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult<string> Login(UserLoginDTO request)
+        public async Task<ActionResult<string>> Login(UserLoginDTO request)
         {
-            User? user = _userService.GetUserByEmai
+            User? user;
+            try
+            {
+                user = await _userService.GetUserByEmailAsync(request.Email);
 
-            if (user is null)
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
                 return BadRequest("Wrong email or password");
+            }
 
+            if (user == null) 
+                return BadRequest("Wrong email or password");
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
                 return BadRequest("Wrong email or password");
 
-            string token = CreateToken(user);
+            var userRole = await _roleService.GetRoleByIdAsync(user.RoleId);
+            string token = CreateToken(user, userRole.Name);
 
             var refreshToken = GenerateRefreshToken();
-            SetRefreshToken(refreshToken, user);
+            SetRefreshToken(refreshToken);
 
             return Ok(token);
+        }
+
+        private RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Created = DateTime.Now,
+                Expires = DateTime.Now.AddDays(3)
+            };
+
+            return refreshToken;
+        }
+
+        private void SetRefreshToken(RefreshToken refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = refreshToken.Expires,
+            };
+
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+
+            Console.WriteLine(refreshToken.Token);
+            //TO DO. Добавити рефреш токен в бд
+            //user.RefreshToken = refreshToken.Token;
+            //user.TokenCreated = refreshToken.Created;
+            //user.TokenExpires = refreshToken.Expires;
+        }
+
+        private string CreateToken(User user, string roleName)
+        {
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, roleName),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                _configuration.GetSection("AppSettings:Token").Value!));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(15),
+                signingCredentials: creds);
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
         }
     }
 }

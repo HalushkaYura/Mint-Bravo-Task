@@ -7,6 +7,7 @@ namespace Bramka.Server.Interfaces
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(Guid id);
+        Task<User> GetUserByEmailAsync(string email);
         Task<Guid> CreateUserAsync(UserRegistrationDTO newItem);
         Task<bool> UpdateUserAsync(Guid id, UserEditDTO updateItem);
         Task<User> GetLastUserAsync();
