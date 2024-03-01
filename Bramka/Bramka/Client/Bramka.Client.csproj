@@ -19,10 +19,26 @@
 	<ItemGroup>
 		<Watch Include="**/*.scss" />
 		<None Remove="Pages\Components\Header.razor.scss" />
+		<None Remove="Pages\Components\ProfileNav.razor.scss" />
+		<None Remove="Pages\History.razor.scss" />
+		<None Remove="Pages\Login.razor.scss" />
+		<None Remove="Pages\Profile.razor.scss" />
+		<None Remove="Pages\Registration.razor.scss" />
 		<Watch Remove="Pages\Components\Header.razor.scss" />
+		<Watch Remove="Pages\Components\ProfileNav.razor.scss" />
+		<Watch Remove="Pages\History.razor.scss" />
 		<Watch Remove="Pages\Index.razor.scss" />
+		<Watch Remove="Pages\Login.razor.scss" />
+		<Watch Remove="Pages\Profile.razor.scss" />
+		<Watch Remove="Pages\Registration.razor.scss" />
+		<Watch Remove="Pages\Statistic.razor.scss" />
 		<Watch Remove="Shared\MainLayout.razor.scss" />
 		<Content Include="Pages\Components\Header.razor.scss" />
+		<Content Include="Pages\Components\ProfileNav.razor.scss" />
+		<Content Include="Pages\History.razor.scss" />
+		<Content Include="Pages\Login.razor.scss" />
+		<Content Include="Pages\Profile.razor.scss" />
+		<Content Include="Pages\Registration.razor.scss" />
 		<None Update="**/*.css" Watch="false" />
 	</ItemGroup>
 

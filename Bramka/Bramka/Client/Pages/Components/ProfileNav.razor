@@ -1,0 +1,14 @@
+﻿@inject NavigationManager nav
+
+<div class="nav block d-flex align-items-center justify-content-between">
+    <div class="nav__profile">
+        <button @onclick="@(()=>nav.NavigateTo("/profile"))" class="@(PageId == 1 ? "activatet" : "")"><span>PROFILE</span></button>
+        <button @onclick="@(()=>nav.NavigateTo("/profile/history"))" class="@(PageId == 2 ? "activatet" : "")"><span>HISTORY</span></button>
+        <button @onclick="@(()=>nav.NavigateTo("/profile/statistics"))" class="@(PageId == 3 ? "activatet" : "")"><span>STATISTIC</span></button>
+    </div>
+    <button @onclick="@(()=>nav.NavigateTo(""))" class="back"><span>BACK TO HOME</span></button>
+</div>
+@code{
+    [Parameter]
+    public int PageId { get; set; }
+}

@@ -76,7 +76,7 @@ header span {
 .collapse, .collapsing {
   position: absolute;
   z-index: 1;
-  top: 10vh;
+  /*top: 75px;*/
 }
 .collapse .collapse-menu, .collapsing .collapse-menu {
   display: flex;

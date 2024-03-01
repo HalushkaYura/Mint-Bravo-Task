@@ -1,0 +1,89 @@
+﻿.block {
+    padding-left: 6vw;
+    padding-right: 6vw;
+}
+.nav {
+    --s14: 14px;
+    --s16: 16px;
+    --s18: 18px;
+    --s20: 20px;
+    --s24: 24px;
+    --s28: 28px;
+    --s30: 30px;
+    --s40: 40px;
+    --s50: 50px;
+    --s60: 60px;
+
+    span, h1, a {
+        color: white;
+    }
+
+    padding-top: 5vh;
+
+    .activatet {
+        border-bottom: 2px solid white;
+    }
+
+    button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+
+        span {
+            font-size: var(--s30);
+        }
+    }
+
+    .nav__profile {
+        button {
+            margin-right: 4vw;
+        }
+    }
+}
+
+@media screen and (max-width: 1250px) {
+    .nav {
+        --s50: 40px;
+    }
+
+}
+
+@media screen and (max-width: 980px) {
+    .nav {
+        --s30: 18px;
+        --s50: 38px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .nav {
+        --s20: 16px;
+    }
+
+}
+
+
+
+@media screen and (max-width: 520px) {
+
+
+    .nav {
+        --s14: 14px;
+        --s16: 16px;
+        --s18: 20px;
+        --s20: 14px;
+        --s40: 30px;
+        --s50: 20px;
+        display: block !important;
+
+        .nav__profile {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back {
+            display: none;
+        }
+    }
+}

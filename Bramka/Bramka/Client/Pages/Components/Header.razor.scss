@@ -96,7 +96,7 @@ header {
 .collapse, .collapsing {
     position: absolute;
     z-index: 1;
-    top: 10vh;
+    /*top: 75px;*/
     .collapse-menu {
         display: flex;
         flex-direction: column;

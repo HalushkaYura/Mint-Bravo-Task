@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+@inject NavigationManager nav
 <PageTitle>Index</PageTitle>
 
 <div class="style-wrapper">
@@ -12,8 +12,8 @@
         </div>
     </div>
     <div class="buttons d-flex flex-column">
-        <button class="btn-purple"><span>LOGIN</span></button>
-        <button class="btn-purple"><span>REGISTRATION</span></button>
+        <button @onclick="@(()=>nav.NavigateTo("/login"))" class="btn-purple"><span>LOGIN</span></button>
+        <button @onclick="@(()=>nav.NavigateTo("/registration"))" class="btn-purple"><span>REGISTRATION</span></button>
     </div>
     <div class="info">
         <a href="">get more info</a>
