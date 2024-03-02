@@ -100,5 +100,6 @@
     <Build Include="dbo\Stored Procedures\sp_QRCode_GetQRCodeByUserId.sql" />
     <Build Include="dbo\Stored Procedures\sp_Log_GetLogByUserId.sql" />
     <Build Include="dbo\Stored Procedures\sp_Users_CheckExistEmail.sql" />
+    <Build Include="dbo\Stored Procedures\sp_Users_GetUserByEmail.sql" />
   </ItemGroup>
 </Project>
