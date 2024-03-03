@@ -91,16 +91,13 @@
     <Build Include="dbo\Stored Procedures\sp_Log_GetLastLog.sql" />
     <Build Include="dbo\Stored Procedures\sp_Log_GetLogById.sql" />
     <Build Include="dbo\Stored Procedures\sp_Log_GetLogByUserId.sql" />
-<<<<<<< HEAD
     <Build Include="dbo\Stored Procedures\sp_Log_UpdateLog.sql" />
     <Build Include="dbo\Stored Procedures\sp_Role_GetRoleIdByName.sql" />
     <Build Include="dbo\Stored Procedures\sp_QRCode_CheckUserHasKey.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Bramka.DataBase.refactorlog" />
-=======
     <Build Include="dbo\Stored Procedures\sp_Users_CheckExistEmail.sql" />
     <Build Include="dbo\Stored Procedures\sp_Users_GetUserByEmail.sql" />
->>>>>>> cd09afce815e602482c66302fa4e5467d8159b18
   </ItemGroup>
 </Project>
