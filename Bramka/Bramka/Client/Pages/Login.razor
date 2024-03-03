@@ -5,7 +5,7 @@
 
 <h3>Login</h3>
 
-<EditForm Model="user" OnSubmit="HandleLogin" class="">
+<EditForm Model="user" OnValidSubmit="HandleLogin" class="">
     <label for="email">Email</label>
     <InputText id="email" @bind-Value="user.Email"></InputText>
     <label for="password">Password</label>
@@ -14,7 +14,7 @@
 </EditForm>
 
 @code {
-    UserLoginDTO? user = new();
+    UserLoginDTO user = new();
 
     private async Task HandleLogin()
     {
@@ -23,7 +23,6 @@
         {
             var token = await result.Content.ReadAsStringAsync();
 
-            Console.WriteLine(token);
             await LocalStorage.SetItemAsync("token", token);
             await AuthStateProvider.GetAuthenticationStateAsync();
         }

@@ -2,5 +2,6 @@
 {
     public interface IAuthService
     {
+        public Task<bool> IsExpiredTokenAsync();
     }
 }
