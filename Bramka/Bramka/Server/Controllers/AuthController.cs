@@ -65,7 +65,7 @@ namespace Bramka.Server.Controllers
             string token = CreateToken(user, userRole.Name);
 
             var refreshToken = GenerateRefreshToken();
-            SetRefreshToken(refreshToken, user);
+            await SetRefreshTokenAsync(refreshToken, user);
 
             return Ok(token);
         }
@@ -98,7 +98,7 @@ namespace Bramka.Server.Controllers
             return refreshToken;
         }
 
-        private void SetRefreshToken(RefreshToken refreshToken, User user)
+        private async Task SetRefreshTokenAsync(RefreshToken refreshToken, User user)
         {
             var cookieOptions = new CookieOptions
             {
@@ -109,10 +109,7 @@ namespace Bramka.Server.Controllers
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
 
             Console.WriteLine(refreshToken.Token);
-            //TO DO. Добавити рефреш токен в бд
-            //user.RefreshToken = refreshToken.Token;
-            //user.TokenCreated = refreshToken.Created;
-            //user.TokenExpires = refreshToken.Expires;
+            await _userService.UpdateRefreshToken(refreshToken, user);
         }
 
         private string CreateToken(User user, string roleName)

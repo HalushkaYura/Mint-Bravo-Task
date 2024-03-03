@@ -130,6 +130,20 @@ namespace Bramka.Server.Services
             return rows > 0;
         }
 
+        public async Task<bool> UpdateRefreshToken(RefreshToken refreshToken, User user)
+        {
+            var rows = await _connection.ExecuteAsync(DataBaseConstants.UpdateRefreshToken,
+            new
+            {
+                user.UserId,
+                user.Email,
+                RefreshToken = refreshToken.Token,
+                TokenCreated = refreshToken.Created,
+                TokenExpires = refreshToken.Expires
+            }, commandType: CommandType.StoredProcedure);
+            return rows > 0;
+        }
+
         public bool IsEmailExist(string email)
         {
             try

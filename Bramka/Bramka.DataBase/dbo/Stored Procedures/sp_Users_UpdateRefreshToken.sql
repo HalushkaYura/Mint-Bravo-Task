@@ -5,6 +5,7 @@
     @TokenCreated DATETIME,
     @TokenExpires DATETIME
 AS
+BEGIN
 	UPDATE [dbo].[User]
     SET
         [RefreshToken] = @RefreshToken,
@@ -12,4 +13,4 @@ AS
         [TokenExpires] = @TokenExpires
     WHERE
         [UserId] = @UserId AND [Email] = @Email;
-RETURN 0
+END

@@ -14,6 +14,7 @@ namespace Bramka.Server.Constans
         public const string GetUserByEmail = "sp_Users_GetUserByEmail";
         public const string GetLastUser = "sp_Users_GetLastUser";
         public const string CheckExistEmail = "sp_Users_CheckExistEmail";
+        public const string UpdateRefreshToken = "sp_Users_UpdateRefreshToken";
 
         #endregion
 
