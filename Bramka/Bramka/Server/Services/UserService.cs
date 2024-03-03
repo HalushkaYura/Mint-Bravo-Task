@@ -89,6 +89,20 @@ namespace Bramka.Server.Services
             return user;
         }
 
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            var user = await _connection.QueryFirstAsync<User>(
+                DataBaseConstants.GetUserByEmail,
+                new { Email = email },
+                commandType: CommandType.StoredProcedure);
+
+            if ( user == null )
+            {
+                throw new NullReferenceException($"Error. Not found user by email");
+            }
+            return user;
+        }
+
         public async Task<User?> GetLastUserAsync()
         {
 

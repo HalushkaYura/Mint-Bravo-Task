@@ -11,6 +11,7 @@ namespace Bramka.Server.Constans
         public const string DeleteUser = "sp_Users_DeleteUser";
         public const string GetAllUsers = "sp_Users_GetAllUsers";
         public const string GetUserById = "sp_Users_GetUserById";
+        public const string GetUserByEmail = "sp_Users_GetUserByEmail";
         public const string GetLastUser = "sp_Users_GetLastUser";
         public const string CheckExistEmail = "sp_Users_CheckExistEmail";
 
