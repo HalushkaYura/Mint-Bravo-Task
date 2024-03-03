@@ -8,9 +8,9 @@
     [Email] NVARCHAR(100) NOT NULL, 
     [PhoneNumber] NVARCHAR(20) NULL, 
     [CreatedAt] DATETIME NOT NULL DEFAULT GETDATE(), 
-    [RefreshToken] NVARCHAR(MAX) NOT NULL, 
-    [TokenCreated] DATETIME NOT NULL, 
-    [TokenExpires] DATETIME NOT NULL, 
+    [RefreshToken] NVARCHAR(MAX) NULL, 
+    [TokenCreated] DATETIME NULL, 
+    [TokenExpires] DATETIME NULL, 
     [RoleId] INT NOT NULL,
 
 

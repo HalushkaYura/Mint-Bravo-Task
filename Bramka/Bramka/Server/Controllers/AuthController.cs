@@ -65,7 +65,7 @@ namespace Bramka.Server.Controllers
             string token = CreateToken(user, userRole.Name);
 
             var refreshToken = GenerateRefreshToken();
-            SetRefreshToken(refreshToken);
+            SetRefreshToken(refreshToken, user);
 
             return Ok(token);
         }
@@ -98,7 +98,7 @@ namespace Bramka.Server.Controllers
             return refreshToken;
         }
 
-        private void SetRefreshToken(RefreshToken refreshToken)
+        private void SetRefreshToken(RefreshToken refreshToken, User user)
         {
             var cookieOptions = new CookieOptions
             {
