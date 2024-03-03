@@ -23,7 +23,7 @@ namespace Bramka.Server.Services
             var role = await _connection.QueryFirstOrDefaultAsync<Role>(DataBaseConstants.GetRoleById,
                                                         new { RoleId = roleId },
                                                         commandType: CommandType.StoredProcedure);
-            return role;
+            return role!;
         }
     }
 }

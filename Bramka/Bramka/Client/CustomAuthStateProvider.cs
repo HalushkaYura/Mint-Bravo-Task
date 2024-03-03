@@ -20,7 +20,7 @@ namespace Bramka.Client
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
 
-            string token = await _localStorage.GetItemAsStringAsync("token");
+            string token = await _localStorage.GetItemAsStringAsync("token") ?? "";
 
             var identity = new ClaimsIdentity();
             _http.DefaultRequestHeaders.Authorization = null;
@@ -44,8 +44,8 @@ namespace Bramka.Client
         {
             var payload = jwt.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-            return keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes) ?? new();
+            return keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()!));
         }
 
         private static byte[] ParseBase64WithoutPadding(string base64)
