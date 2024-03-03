@@ -70,6 +70,22 @@ namespace Bramka.Server.Controllers
             return Ok(token);
         }
 
+        //[HttpPost("refresh-token")]
+        //public async Task<ActionResult<string>> RefreshToken()
+        //{
+        //    var refreshToken = Request.Cookies["refreshToken"];
+
+        //    if (!user.RefreshToken.Equals(refreshToken)) return Unauthorized("Invalid Refresh Token");
+
+        //    else if (user.TokenExpires < DateTime.Now) return Unauthorized("Token expired.");
+
+        //    string token = CreateToken(user);
+        //    var newRefreshToken = GenerateRefreshToken();
+        //    SetRefreshToken(newRefreshToken);
+
+        //    return Ok(token);
+        //}
+
         private RefreshToken GenerateRefreshToken()
         {
             var refreshToken = new RefreshToken
@@ -111,7 +127,7 @@ namespace Bramka.Server.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration.GetSection("AppSettings:Token").Value!));
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
             var token = new JwtSecurityToken(
                 claims: claims,

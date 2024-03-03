@@ -1,4 +1,8 @@
 ﻿@page "/counter"
+@attribute [Authorize]
+@inject IAuthService AuthService
+@inject NavigationManager NavManager
+
 
 <PageTitle>Counter</PageTitle>
 
@@ -10,6 +14,16 @@
 
 @code {
     private int currentCount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await AuthService.IsExpiredTokenAsync();
+        if (result)
+        {
+            NavManager.NavigateTo("/login");
+        }
+    }
+
 
     private void IncrementCount()
     {

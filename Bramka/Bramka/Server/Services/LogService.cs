@@ -40,7 +40,7 @@ namespace Bramka.Server.Services
             var log = await _connection.QueryFirstOrDefaultAsync<Log>(DataBaseConstants.GetLogById,
                                                        new { LogId = id },
                                                        commandType: CommandType.StoredProcedure);
-            return log;
+            return log!;
         }
 
         public async Task<IEnumerable<Log>> GetAllLogsAsync()
