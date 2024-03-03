@@ -3,10 +3,9 @@
     public class QrCode
     {
         public int QrCodeId { get; set; }
-        public string Type { get; set; }
-        public string Code { get; set; }
-        public DateTime ExpirationDate { get; set; }
-        public DateTime UseDate { get; set; }
+        public string CodeHash { get; set; }
+        public int GenerationCount { get; set; }
+        public DateTime CreatedAt { get; set; }
         public Guid UserId { get; set; }
     }
 }

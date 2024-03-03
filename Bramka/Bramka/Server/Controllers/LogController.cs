@@ -1,7 +1,4 @@
-﻿using Bramka.Server.Services;
-using Bramka.Shared.Interfaces.Services;
-using Bramka.Shared.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Bramka.Shared.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bramka.Server.Controllers
@@ -12,7 +9,7 @@ namespace Bramka.Server.Controllers
     {
         private readonly ILogService _logService;
 
-        public LogController( ILogService logService)
+        public LogController(ILogService logService)
         {
             _logService = logService;
         }

@@ -8,6 +8,7 @@ using FluentValidation.AspNetCore;
 using System.Data.SqlClient;
 using System.Data;
 using Microsoft.Extensions.Configuration;
+using Bramka.Shared.DTOs.QrCodeDTO;
 
 namespace Bramka
 {
@@ -36,6 +37,7 @@ namespace Bramka
             builder.Services.AddTransient<IValidator<UserRegistrationDTO>, UserRegistrationValidation>();
             builder.Services.AddTransient<IValidator<UserEditDTO>, UserEditValidation>();
             builder.Services.AddTransient<IValidator<UserSetPasswordDTO>, UserSetPasswordValidation>();
+            builder.Services.AddTransient<IValidator<QrCodeCreateDTO>, QrCodeCreateValidation>();
 
 
             builder.Services.AddControllersWithViews();

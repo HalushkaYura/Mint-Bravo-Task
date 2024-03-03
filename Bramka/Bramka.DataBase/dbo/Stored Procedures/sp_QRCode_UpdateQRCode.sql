@@ -1,17 +1,15 @@
 ﻿CREATE PROCEDURE [dbo].[sp_QrCode_UpdateQrCode]
     @QrCodeId INT,
-    @Type NVARCHAR(255),
-    @Code NVARCHAR(255),
-    @ExpirationDate DATETIME,
+    @CodeHash NVARCHAR(Max),
+    @GenerationCount Int,
     @UserId UNIQUEIDENTIFIER
 AS
 BEGIN
     UPDATE [dbo].[QrCode]
     SET
-        [Type] = @Type,
-        [Code] = @Code,
+        [CodeHash] = @CodeHash,
         [UserId] = @UserId,
-        [ExpirationDate] = @ExpirationDate
+        [GenerationCount] = @GenerationCount
     WHERE
         [QrCodeId] = @QrCodeId;
 END;

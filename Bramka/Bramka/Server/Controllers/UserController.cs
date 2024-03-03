@@ -13,12 +13,10 @@ namespace Bramka.Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ILogService _logService;
 
-        public UserController(IUserService userService, ILogService logService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _logService = logService;
         }
 
         [HttpPost]
@@ -28,11 +26,6 @@ namespace Bramka.Server.Controllers
             try
             {
                 var userCreated = await _userService.CreateUserAsync(newUser);
-                await _logService.CreateLogAsync(new Log { 
-                                                        ActionType = "UserCreated",
-                                                        Description = $"User {newUser.Name} {newUser.Surname} created.", 
-                                                        UserId = userCreated, 
-                                                        QrCodeId = null }); 
                 return Ok(userCreated);
             }
             catch (Exception ex)
@@ -50,13 +43,6 @@ namespace Bramka.Server.Controllers
             try
             {
                 await _userService.UpdateUserAsync(userId, userEdit);
-                await _logService.CreateLogAsync(new Log
-                {
-                    ActionType = "UserUpdated",
-                    Description = $"User {userEdit.Name} {userEdit.Surname} updated.",
-                    UserId = userId,
-                    QrCodeId = null
-                });
                 return Ok();
 
             }
@@ -94,17 +80,10 @@ namespace Bramka.Server.Controllers
             try
             {
                 var success = await _userService.DeleteUserAsync(userId);
-                if (!success) 
+                if (!success)
                 {
                     return NotFound();
                 }
-                await _logService.CreateLogAsync(new Log
-                {
-                    ActionType = "UserDelete",
-                    Description = $"User {userId} has deleted the account.",
-                    UserId = null,
-                    QrCodeId = null
-                });
                 return Ok();
 
             }

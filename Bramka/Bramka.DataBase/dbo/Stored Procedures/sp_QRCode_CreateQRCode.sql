@@ -1,13 +1,11 @@
 ﻿CREATE PROCEDURE [dbo].[sp_QrCode_CreateQrCode]
-    @Type NVARCHAR(255),
-    @Code NVARCHAR(255),
-    @ExpirationDate DATETIME,
-    @UserId UNIQUEIDENTIFIER,
-    @IdQrCode INT OUTPUT
+    @CodeHash NVARCHAR(Max),
+    @UserId UNIQUEIDENTIFIER = NULL,
+    @QrCodeId INT OUTPUT
 AS
 BEGIN
-    INSERT INTO [dbo].[QrCode] ([Type], [Code], [ExpirationDate], [UserId])
-    VALUES (@Type, @Code, @ExpirationDate, @UserId);
+    INSERT INTO [dbo].[QrCode] ([CodeHash], [UserId])
+    VALUES ( @CodeHash, @UserId);
 
-    SET @IdQrCode = SCOPE_IDENTITY();
+    SET @QrCodeId = SCOPE_IDENTITY();
 END;

@@ -21,7 +21,6 @@ namespace Bramka.Server.Services
                 {
                     newLog.ActionType,
                     newLog.Description,
-                    newLog.QrCodeId,
                     newLog.UserId
                 }, commandType: CommandType.StoredProcedure);
 

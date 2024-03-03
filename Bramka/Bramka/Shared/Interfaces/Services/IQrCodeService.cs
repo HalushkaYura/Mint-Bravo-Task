@@ -11,9 +11,8 @@ namespace Bramka.Shared.Interfaces.Services
         Task <IEnumerable<QrCode>> GetQrCodeByUserIdAsync(Guid userId);
         Task<int> CreateQrCodeAsync(QrCodeCreateDTO newQrCode);
         Task<bool> UpdateQrCodeAsync(QrCode newQrCode, int id);
-        Task<QrCode?> GetLastQrCodeAsync(Guid? id);
-        Task<bool> UseQrCodeAsync(int id);
-
+        Task<QrCode?> GetLastQrCodeAsync(Guid id);
+        Task<int> CreateQrCodeGuestAsync(string code);
 
 
     }

@@ -13,12 +13,10 @@ namespace Bramka.Server.Controllers
     public class QrCodeController : ControllerBase
     {
         private readonly IQrCodeService _qrCodeService;
-        private readonly ILogService _logService;
 
-        public QrCodeController(IQrCodeService qrCodeService, ILogService logService)
+        public QrCodeController(IQrCodeService qrCodeService)
         {
             _qrCodeService = qrCodeService;
-            _logService = logService;
         }
 
         [HttpGet]
@@ -103,13 +101,6 @@ namespace Bramka.Server.Controllers
             try
             {
                 var qrCodeId = await _qrCodeService.CreateQrCodeAsync(newQrCode);
-                await _logService.CreateLogAsync(new Log
-                {
-                    ActionType = "GenerateQrCode",
-                    Description = $"Qr-code {qrCodeId} has been created. Type {newQrCode.Type}",
-                    UserId = newQrCode.UserId,
-                    QrCodeId = qrCodeId
-                });
                 return Ok(qrCodeId);
             }
             catch (Exception ex) 
@@ -118,30 +109,22 @@ namespace Bramka.Server.Controllers
             }
 
         }
-
-        [HttpPut]
-        [Route("use")]
-        public async Task<IActionResult> UsingQrCode([FromBody] QrCodeUseDTO qrCode)
+        [HttpPost]
+        [Route("createGuest")]
+        public async Task<IActionResult> CreateQrCodeForGuest([FromBody] string code)
         {
             try
             {
-                await _qrCodeService.UseQrCodeAsync(qrCode.QrCodeId);
-                await _logService.CreateLogAsync(new Log
-                {
-                    ActionType = "UsingQrCode",
-                    Description = $"Qr-code {qrCode.QrCodeId} was  used.",
-                    UserId = qrCode.UserId,
-                    QrCodeId = qrCode.QrCodeId
-                });
-                return Ok();
+                var qrCodeId = await _qrCodeService.CreateQrCodeGuestAsync(code);
+                return Ok(qrCodeId);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+
         }
 
-        
         [HttpDelete]
         [Route("delete/{qrCodeId}")]
         public async Task<IActionResult> DeleteQrCode(int qrCodeId)
@@ -153,13 +136,6 @@ namespace Bramka.Server.Controllers
                 {
                     return NotFound();
                 }
-                await _logService.CreateLogAsync(new Log
-                {
-                    ActionType = "QrCodeDelete",
-                    Description = $"Qr-Code {qrCodeId} has deleted.",
-                    UserId = null,
-                    QrCodeId = null
-                });
 
                 return Ok();
             }

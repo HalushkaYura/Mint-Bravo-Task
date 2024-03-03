@@ -26,6 +26,7 @@ namespace Bramka.Server.Constans
         public const string GetLastQrCode = "sp_QrCode_GetLastQrCode";
         public const string UpdateQrCodeUseDate = "sp_QrCode_UpdateUseDate";
         public const string GetAllQrCodeByUserId = "sp_QrCode_GetQrCodeByUserId";
+        public const string QrCodeExist = "sp_QrCode_CheckUserHasKey";
 
         #endregion
 
@@ -37,6 +38,7 @@ namespace Bramka.Server.Constans
         public const string GetAllRoles = "sp_Role_GetAllRoles";
         public const string GetRoleById = "sp_Role_GetRoleById";
         public const string GetLastRole = "sp_Role_GetLastRole";
+        public const string GetRoleIdByName = "sp_Role_GetRoleIdByName";
 
         #endregion
 
@@ -53,15 +55,5 @@ namespace Bramka.Server.Constans
 
         #endregion
 
-        #region JWTToken
-
-        public const string CreateJWTToken = "sp_JWTToken_CreateJWTToken";
-        public const string UpdateJWTToken = "sp_JWTToken_UpdateJWTToken";
-        public const string DeleteJWTToken = "sp_JWTToken_DeleteJWTToken";
-        public const string GetAllJWTTokens = "sp_JWTToken_GetAllJWTTokens";
-        public const string GetJWTTokenById = "sp_JWTToken_GetJWTTokenById";
-        public const string GetLastJWTToken = "sp_JWTToken_GetLastJWTToken";
-
-        #endregion
     }
 }

@@ -16,48 +16,74 @@ namespace Bramka.Server.Services
         {
             _connection = dbConnection;
         }
-        public async Task<int> CreateQrCodeAsync(QrCodeCreateDTO newQrCode)
+        public async Task<int> CreateQrCodeGuestAsync(string code)
         {
-            if (!Enum.IsDefined(typeof(QrCodeTypes), newQrCode.Type))
+            if(!Enum.IsDefined(typeof(QrCodeKey), code))
             {
-                throw new ArgumentException("Invalid QR code type.");
+                throw new InvalidOperationException("Invalid QR code key.");
+            }
+            if (await CheckUserHasKeyAsync((Guid?)null, code))
+            {
+                throw new InvalidOperationException("QR code already exist.");
             }
 
-            //Перевірка і де активування старого qr-code
-            await DeactiveQrCode(newQrCode.UserId);
-
             var parameters = new DynamicParameters(
-            new
-            {
-                newQrCode.Type,
-                Code = Guid.NewGuid().ToString(),
-                ExpirationDate = DateTime.Now.AddMinutes(30),
-                newQrCode.UserId
-            });
-            parameters.Add("@IdQrCode", dbType: DbType.Int32, direction: ParameterDirection.Output);
+             new
+             {
+                 CodeHash = code,
+                 UserId = (Guid ?)null
+             });
+            parameters.Add("@QrCodeId", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
             await _connection.ExecuteAsync(DataBaseConstants.CreateQrCode,
                                             parameters,
                                             commandType: CommandType.StoredProcedure);
-            return parameters.Get<int>("@IdQrCode");
+            return parameters.Get<int>("@QrCodeId");
         }
 
-        private async Task DeactiveQrCode(Guid userId)
+        public async Task<int> CreateQrCodeAsync(QrCodeCreateDTO newQrCode)
         {
-            var activeCode = await GetLastQrCodeAsync(userId);
-            if (activeCode != null && activeCode.ExpirationDate > DateTime.Now)
+            if (await CheckUserExistAsync(newQrCode.UserId))
             {
-                var row = await _connection.ExecuteAsync(DataBaseConstants.UpdateQrCode,
-                        new
-                        {
-                            activeCode.Type,
-                            activeCode.Code,
-                            activeCode.UserId,
-                            ExpirationDate = DateTime.Now,
-                            QrCodeId = activeCode.QrCodeId
-                        }, commandType: CommandType.StoredProcedure);
-
+                throw new InvalidOperationException("User does not exist");
             }
+
+            if (await CheckUserHasKeyAsync(newQrCode.UserId, newQrCode.CodeHash))
+            {
+                throw new InvalidOperationException("QR code already exist.");
+            }
+
+            var parameters = new DynamicParameters(
+             new
+             {
+                 newQrCode.CodeHash,
+                 newQrCode.UserId
+             });
+            parameters.Add("@QrCodeId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+            await _connection.ExecuteAsync(DataBaseConstants.CreateQrCode,
+                                            parameters,
+                                            commandType: CommandType.StoredProcedure);
+            return parameters.Get<int>("@QrCodeId");
+        }
+
+
+        private async Task<bool> CheckUserExistAsync(Guid userId)
+        {
+            var  user = await _connection.QueryFirstOrDefaultAsync(DataBaseConstants.GetUserById,
+                        new { UserId = userId},
+                        commandType: CommandType.StoredProcedure);
+
+            return user == null;
+        }
+
+        private async Task<bool> CheckUserHasKeyAsync(Guid? userId, string code)
+        {
+            var obj = await _connection.QueryFirstOrDefaultAsync(DataBaseConstants.QrCodeExist,
+                        new { UserId = userId, Code = code },
+                        commandType: CommandType.StoredProcedure);
+
+            return obj != null;
         }
 
         public async Task<bool> DeleteQrCodeAsync(int qrCodeId)
@@ -74,8 +100,14 @@ namespace Bramka.Server.Services
             return await _connection.QueryAsync<QrCode>(DataBaseConstants.GetAllQrCodes);
         }
 
-        public async Task<QrCode?> GetLastQrCodeAsync(Guid? userId)
+        public async Task<QrCode?> GetLastQrCodeAsync(Guid userId)
         {
+            if (await CheckUserExistAsync(userId))
+            {
+                throw new InvalidOperationException("User does not exist.");
+
+            }
+
             var qrCode = await _connection.QueryFirstOrDefaultAsync<QrCode>(
                 DataBaseConstants.GetLastQrCode,
                 new
@@ -97,6 +129,11 @@ namespace Bramka.Server.Services
 
         public async Task<IEnumerable<QrCode>> GetQrCodeByUserIdAsync(Guid userId)
         {
+            if (await CheckUserExistAsync(userId))
+            {
+                throw new InvalidOperationException("User does not exist.");
+
+            }
             var QrCode = await _connection.QueryAsync<QrCode>(DataBaseConstants.GetAllQrCodeByUserId,
                 new { UserId = userId }, commandType: CommandType.StoredProcedure);
 
@@ -109,41 +146,13 @@ namespace Bramka.Server.Services
                 new
                 {
                     QrCodeId = id,
-                    newQrCode.UseDate,
-                    newQrCode.Type,
-                    newQrCode.Code,
+                    newQrCode.CodeHash,
+                    newQrCode.GenerationCount,
                     newQrCode.UserId
                 }, commandType: CommandType.StoredProcedure);
 
             return row > 0;
         }
 
-        public async Task<bool> UseQrCodeAsync(int id)
-        {
-            if (await IsActive(id) == false)
-            {
-                throw new InvalidOperationException("QR code has expired");
-            }
-
-            var row = await _connection.ExecuteAsync(DataBaseConstants.UpdateQrCodeUseDate,
-                new
-                {
-                    UseDate = DateTime.Now,
-                    QrCodeId = id
-                },
-                commandType: CommandType.StoredProcedure);
-
-            return row > 0;
-        }
-
-        private async Task<bool> IsActive(int id)
-        {
-            var qr = await GetQrCodeByIdAsync(id);
-            if (qr != null && qr.ExpirationDate > DateTime.Now && qr.UseDate == DateTime.MinValue)
-            {
-                return true;
-            }
-            return false;
-        }
     }
 }

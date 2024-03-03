@@ -2,8 +2,6 @@
     @LogId INT,
     @ActionType VARCHAR(255),
     @Description NVARCHAR(MAX),
-    @CreatedAt DATETIME,
-    @QrCodeId INT,
     @UserId UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -11,8 +9,6 @@ BEGIN
     SET
         [ActionType] = @ActionType,
         [Description] = @Description,
-        [CreatedAt] = @CreatedAt,
-        [QrCodeId] = @QrCodeId,
         [UserId] = @UserId
     WHERE
         [LogId] = @LogId;

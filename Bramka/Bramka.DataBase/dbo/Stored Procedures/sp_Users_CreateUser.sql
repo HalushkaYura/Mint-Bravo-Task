@@ -10,6 +10,6 @@
 AS
 BEGIN
     SET @UserId = NEWID(); 
-    INSERT INTO [dbo].[User] ([UserId], [Name], [Surname],[BirthDate], [PasswordHash], [Email], [PhoneNumber], [CreatedAt], [RoleId])
-    VALUES (@UserId, @Name, @Surname, @BirthDate,@PasswordHash, @Email, @PhoneNumber, GETDATE(), @RoleId);
+    INSERT INTO [dbo].[User] ([UserId], [Name], [Surname],[BirthDate], [PasswordHash], [Email], [PhoneNumber], [RoleId])
+    VALUES (@UserId, @Name, @Surname, @BirthDate,@PasswordHash, @Email, @PhoneNumber, @RoleId);
 END;

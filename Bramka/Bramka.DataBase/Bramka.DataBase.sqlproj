@@ -65,7 +65,6 @@
     <Build Include="dbo\Table\QRCode.sql" />
     <Build Include="dbo\Table\Role.sql" />
     <Build Include="dbo\Table\Log.sql" />
-    <Build Include="dbo\Table\JWTToken.sql" />
     <Build Include="dbo\Stored Procedures\sp_Users_CreateUser.sql" />
     <Build Include="dbo\Stored Procedures\sp_Users_UpdateUser.sql" />
     <Build Include="dbo\Stored Procedures\sp_Users_DeleteUser.sql" />
@@ -84,21 +83,19 @@
     <Build Include="dbo\Stored Procedures\sp_Role_GetAllRoles.sql" />
     <Build Include="dbo\Stored Procedures\sp_Role_GetRoleById.sql" />
     <Build Include="dbo\Stored Procedures\sp_Role_GetLastRole.sql" />
+    <Build Include="dbo\Stored Procedures\sp_QRCode_GetQRCodeByUserId.sql" />
+    <Build Include="dbo\Stored Procedures\sp_Users_CheckExistEmail.sql" />
     <Build Include="dbo\Stored Procedures\sp_Log_CreateLog.sql" />
-    <Build Include="dbo\Stored Procedures\sp_Log_UpdateLog.sql" />
     <Build Include="dbo\Stored Procedures\sp_Log_DeleteLog.sql" />
     <Build Include="dbo\Stored Procedures\sp_Log_GetAllLogs.sql" />
-    <Build Include="dbo\Stored Procedures\sp_Log_GetLogById.sql" />
     <Build Include="dbo\Stored Procedures\sp_Log_GetLastLog.sql" />
-    <Build Include="dbo\Stored Procedures\sp_JWTToken_CreateJWTToken.sql" />
-    <Build Include="dbo\Stored Procedures\sp_JWTToken_UpdateJWTToken.sql" />
-    <Build Include="dbo\Stored Procedures\sp_JWTToken_DeleteJWTToken.sql" />
-    <Build Include="dbo\Stored Procedures\sp_JWTToken_GetAllJWTTokens.sql" />
-    <Build Include="dbo\Stored Procedures\sp_JWTToken_GetJWTTokenById.sql" />
-    <Build Include="dbo\Stored Procedures\sp_JWTToken_GetLastJWTToken.sql" />
-    <Build Include="dbo\Stored Procedures\sp_QRCode_UpdateUseDate.sql" />
-    <Build Include="dbo\Stored Procedures\sp_QRCode_GetQRCodeByUserId.sql" />
+    <Build Include="dbo\Stored Procedures\sp_Log_GetLogById.sql" />
     <Build Include="dbo\Stored Procedures\sp_Log_GetLogByUserId.sql" />
-    <Build Include="dbo\Stored Procedures\sp_Users_CheckExistEmail.sql" />
+    <Build Include="dbo\Stored Procedures\sp_Log_UpdateLog.sql" />
+    <Build Include="dbo\Stored Procedures\sp_Role_GetRoleIdByName.sql" />
+    <Build Include="dbo\Stored Procedures\sp_QRCode_CheckUserHasKey.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Bramka.DataBase.refactorlog" />
   </ItemGroup>
 </Project>

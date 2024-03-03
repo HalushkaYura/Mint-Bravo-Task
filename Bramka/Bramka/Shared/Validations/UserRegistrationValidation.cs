@@ -42,11 +42,6 @@ namespace Bramka.Shared.Validations
                 .Matches(@"^\d{10}$").When(user => !string.IsNullOrWhiteSpace(user.PhoneNumber))
                     .WithMessage("Phone number must consist of exactly 10 digits.");
 
-            RuleFor(user => user.RoleId)
-                .NotNull()
-                .GreaterThan(0)
-                .LessThan(3)
-                .WithMessage("Role must be selected."); 
         }
         private bool IsUniqueUserEmail(string email)
         {
