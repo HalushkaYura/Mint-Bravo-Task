@@ -103,6 +103,20 @@ namespace Bramka.Server.Services
             return user;
         }
 
+        public async Task<User> GetUserByRefreshTokenAsync(string refreshToken)
+        {
+            var user = await _connection.QueryFirstAsync<User>(
+                DataBaseConstants.GetUserByRefreshToken,
+                new { RefreshToken = refreshToken },
+                commandType: CommandType.StoredProcedure);
+
+            if (user == null)
+            {
+                throw new NullReferenceException($"Error. Not found user by refresh token");
+            }
+            return user;
+        }
+
         public async Task<User?> GetLastUserAsync()
         {
 
