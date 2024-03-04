@@ -9,6 +9,9 @@ using System.Data.SqlClient;
 using System.Data;
 using Microsoft.Extensions.Configuration;
 using Bramka.Shared.DTOs.QrCodeDTO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Bramka
 {
@@ -24,6 +27,17 @@ namespace Bramka
             builder.Services.AddSwaggerGen(options => { });
             var configuration = builder.Configuration;
             var connectionString = configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                        builder.Configuration.GetSection("AppSettings:Token").Value!)),
+                };
+            });
 
             builder.Services.AddScoped<IDbConnection>(_ => new SqlConnection(connectionString));
 
