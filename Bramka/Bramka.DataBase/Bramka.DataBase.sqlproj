@@ -95,6 +95,7 @@
     <Build Include="dbo\Stored Procedures\sp_Role_GetRoleIdByName.sql" />
     <Build Include="dbo\Stored Procedures\sp_QRCode_CheckUserHasKey.sql" />
     <Build Include="dbo\Stored Procedures\sp_Users_UpdateRefreshToken.sql" />
+    <Build Include="dbo\Stored Procedures\sp_Users_GetUserByRefreshToken.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Bramka.DataBase.refactorlog" />
