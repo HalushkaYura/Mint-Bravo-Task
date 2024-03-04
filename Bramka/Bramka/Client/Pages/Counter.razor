@@ -2,6 +2,8 @@
 @attribute [Authorize]
 @inject IAuthService AuthService
 @inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthProvider
+@inject HttpClient HttpClient
 
 
 <PageTitle>Counter</PageTitle>
@@ -11,6 +13,7 @@
 <p role="status">Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="CheckAdmin">Check Admin</button>
 
 @code {
     private int currentCount = 0;
@@ -22,11 +25,32 @@
         {
             NavManager.NavigateTo("/login");
         }
+
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+
+        foreach(var claim in authState.User.Claims)
+        {
+            Console.WriteLine(claim.Issuer);
+            Console.WriteLine(claim.Value);
+        }
     }
 
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    private async void CheckAdmin()
+    {
+        var result = await HttpClient.PostAsync(HttpClient.BaseAddress + "api/Auth/check-admin", null);
+        if (result.IsSuccessStatusCode)
+        {
+            Console.WriteLine("You're admin");
+        }
+        else
+        {
+            Console.WriteLine("You're not admin");
+        }
     }
 }
