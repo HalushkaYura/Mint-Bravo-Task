@@ -2,9 +2,11 @@
 using Bramka.Shared.DTOs.UserDTO;
 using Bramka.Shared.Interfaces.Services;
 using Bramka.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -70,21 +72,51 @@ namespace Bramka.Server.Controllers
             return Ok(token);
         }
 
-        //[HttpPost("refresh-token")]
-        //public async Task<ActionResult<string>> RefreshToken()
-        //{
-        //    var refreshToken = Request.Cookies["refreshToken"];
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<string>> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshToken is null)
+            {
+                return Unauthorized("Refresh token is empty");
+            }
 
-        //    if (!user.RefreshToken.Equals(refreshToken)) return Unauthorized("Invalid Refresh Token");
+            User user;
+            try
+            {
+                user = await _userService.GetUserByRefreshTokenAsync(refreshToken)!;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
 
-        //    else if (user.TokenExpires < DateTime.Now) return Unauthorized("Token expired.");
+            if (user.TokenExpires < DateTime.Now)
+                return Unauthorized("Token expired");
 
-        //    string token = CreateToken(user);
-        //    var newRefreshToken = GenerateRefreshToken();
-        //    SetRefreshToken(newRefreshToken);
+            var userRole = await _roleService.GetRoleByIdAsync(user.RoleId);
+            string token = CreateToken(user, userRole.Name);
 
-        //    return Ok(token);
-        //}
+            var newRefreshToken = GenerateRefreshToken();
+            await SetRefreshTokenAsync(newRefreshToken, user);
+
+            //if (!user.RefreshToken.Equals(refreshToken)) return Unauthorized("Invalid Refresh Token");
+
+            //else if (user.TokenExpires < DateTime.Now) return Unauthorized("Token expired.");
+
+            //string token = CreateToken(user);
+            //var newRefreshToken = GenerateRefreshToken();
+            //SetRefreshToken(newRefreshToken);
+
+            return Ok(token);
+        }
+
+        [HttpPost("check-admin"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> checkAdmin()
+        {
+
+            return Ok();
+        }
 
         private RefreshToken GenerateRefreshToken()
         {
