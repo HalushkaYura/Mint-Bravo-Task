@@ -28,8 +28,8 @@ namespace Bramka.Client
             if (!string.IsNullOrEmpty(token))
             {
                 identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
-                _http.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
+                //_http.DefaultRequestHeaders.Authorization =
+                //    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
             }
 
             var user = new ClaimsPrincipal(identity);

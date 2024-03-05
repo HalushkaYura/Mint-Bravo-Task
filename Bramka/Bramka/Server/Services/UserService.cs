@@ -103,6 +103,20 @@ namespace Bramka.Server.Services
             return user;
         }
 
+        public async Task<User> GetUserByRefreshTokenAsync(string refreshToken)
+        {
+            var user = await _connection.QueryFirstAsync<User>(
+                DataBaseConstants.GetUserByRefreshToken,
+                new { RefreshToken = refreshToken },
+                commandType: CommandType.StoredProcedure);
+
+            if (user == null)
+            {
+                throw new NullReferenceException($"Error. Not found user by refresh token");
+            }
+            return user;
+        }
+
         public async Task<User?> GetLastUserAsync()
         {
 
@@ -127,6 +141,20 @@ namespace Bramka.Server.Services
                     updateItem.PhoneNumber,
                     updateItem.RoleId
                 }, commandType: CommandType.StoredProcedure);
+            return rows > 0;
+        }
+
+        public async Task<bool> UpdateRefreshToken(RefreshToken refreshToken, User user)
+        {
+            var rows = await _connection.ExecuteAsync(DataBaseConstants.UpdateRefreshToken,
+            new
+            {
+                user.UserId,
+                user.Email,
+                RefreshToken = refreshToken.Token,
+                TokenCreated = refreshToken.Created,
+                TokenExpires = refreshToken.Expires
+            }, commandType: CommandType.StoredProcedure);
             return rows > 0;
         }
 

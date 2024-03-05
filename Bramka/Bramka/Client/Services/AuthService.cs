@@ -1,16 +1,19 @@
 ﻿using Blazored.LocalStorage;
 using Bramka.Client.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 
 namespace Bramka.Client.Services
 {
     public class AuthService : IAuthService
     {
         private readonly ILocalStorageService _localStorage;
+        private readonly HttpClient _httpClient;
 
-        public AuthService(ILocalStorageService localStorageService)
+        public AuthService(ILocalStorageService localStorageService, HttpClient httpClient)
         {
             _localStorage = localStorageService;
+            _httpClient = httpClient;
         }
 
         public async Task<bool> IsExpiredTokenAsync()
@@ -36,9 +39,34 @@ namespace Bramka.Client.Services
             return now > expires;
         }
 
-        public void GetJWTToken()
+        public async Task<string?> GetJwtAsync()
         {
+            var token = await _localStorage.GetItemAsStringAsync("token");
+            return token;
+        }
 
+        public async Task<bool> RefreshTokenAsync()
+        {
+            var response = await _httpClient.PostAsync(_httpClient.BaseAddress + "api/Auth/refresh-token", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var token = await response.Content.ReadAsStringAsync();
+
+                await _localStorage.SetItemAsync("token", token);
+                return true;
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await _localStorage.RemoveItemAsync("token");
+                return false;
+            }
+            return false;
+        }
+
+        public async Task LogoutAsync()
+        {
+            await _localStorage.RemoveItemAsync("token");
         }
     }
 }

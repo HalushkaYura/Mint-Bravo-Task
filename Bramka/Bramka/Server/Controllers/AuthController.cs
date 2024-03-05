@@ -2,9 +2,11 @@
 using Bramka.Shared.DTOs.UserDTO;
 using Bramka.Shared.Interfaces.Services;
 using Bramka.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -65,26 +67,68 @@ namespace Bramka.Server.Controllers
             string token = CreateToken(user, userRole.Name);
 
             var refreshToken = GenerateRefreshToken();
-            SetRefreshToken(refreshToken);
+            await SetRefreshTokenAsync(refreshToken, user);
 
             return Ok(token);
         }
 
-        //[HttpPost("refresh-token")]
-        //public async Task<ActionResult<string>> RefreshToken()
-        //{
-        //    var refreshToken = Request.Cookies["refreshToken"];
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<string>> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (refreshToken is null)
+            {
+                Response.Cookies.Delete("refreshToken");
+                return Unauthorized("Refresh token is empty");
+            }
 
-        //    if (!user.RefreshToken.Equals(refreshToken)) return Unauthorized("Invalid Refresh Token");
+            User user;
+            try
+            {
+                user = await _userService.GetUserByRefreshTokenAsync(refreshToken)!;
+            }
+            catch (Exception ex)
+            {
 
-        //    else if (user.TokenExpires < DateTime.Now) return Unauthorized("Token expired.");
+                return BadRequest(new { ex.Message });
+            }
 
-        //    string token = CreateToken(user);
-        //    var newRefreshToken = GenerateRefreshToken();
-        //    SetRefreshToken(newRefreshToken);
+            if (user.TokenExpires < DateTime.Now)
+            {
+                Response.Cookies.Delete("refreshToken");
+                return Unauthorized("Token expired");
+            }
 
-        //    return Ok(token);
-        //}
+            var userRole = await _roleService.GetRoleByIdAsync(user.RoleId);
+            string token = CreateToken(user, userRole.Name);
+
+            var newRefreshToken = GenerateRefreshToken();
+            await SetRefreshTokenAsync(newRefreshToken, user);
+
+            //if (!user.RefreshToken.Equals(refreshToken)) return Unauthorized("Invalid Refresh Token");
+
+            //else if (user.TokenExpires < DateTime.Now) return Unauthorized("Token expired.");
+
+            //string token = CreateToken(user);
+            //var newRefreshToken = GenerateRefreshToken();
+            //SetRefreshToken(newRefreshToken);
+
+            return Ok(token);
+        }
+
+        [HttpPost("check-admin"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CheckAdmin()
+        {
+
+            return Ok();
+        }
+
+        [HttpPost("check-user"), Authorize(Roles = "User")]
+        public async Task<IActionResult> CheckUser()
+        {
+
+            return Ok();
+        }
 
         private RefreshToken GenerateRefreshToken()
         {
@@ -98,7 +142,7 @@ namespace Bramka.Server.Controllers
             return refreshToken;
         }
 
-        private void SetRefreshToken(RefreshToken refreshToken)
+        private async Task SetRefreshTokenAsync(RefreshToken refreshToken, User user)
         {
             var cookieOptions = new CookieOptions
             {
@@ -109,10 +153,7 @@ namespace Bramka.Server.Controllers
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
 
             Console.WriteLine(refreshToken.Token);
-            //TO DO. Добавити рефреш токен в бд
-            //user.RefreshToken = refreshToken.Token;
-            //user.TokenCreated = refreshToken.Created;
-            //user.TokenExpires = refreshToken.Expires;
+            await _userService.UpdateRefreshToken(refreshToken, user);
         }
 
         private string CreateToken(User user, string roleName)
