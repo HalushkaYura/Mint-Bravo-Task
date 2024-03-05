@@ -1,9 +1,9 @@
 ﻿@page "/counter"
 @attribute [Authorize]
-@inject IAuthService AuthService
 @inject NavigationManager NavManager
-@inject AuthenticationStateProvider AuthProvider
 @inject HttpClient HttpClient
+@inject IHttpClientFactory Factory
+@inject AuthenticationStateProvider AuthStateProvider
 
 
 <PageTitle>Counter</PageTitle>
@@ -13,26 +13,22 @@
 <p role="status">Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="CheckUser">Check User</button>
 <button class="btn btn-primary" @onclick="CheckAdmin">Check Admin</button>
+
+<p>@text</p>
 
 @code {
     private int currentCount = 0;
+    private string text;
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await AuthService.IsExpiredTokenAsync();
-        if (result)
-        {
-            NavManager.NavigateTo("/login");
-        }
-
-        var authState = await AuthProvider.GetAuthenticationStateAsync();
-
-        foreach(var claim in authState.User.Claims)
-        {
-            Console.WriteLine(claim.Issuer);
-            Console.WriteLine(claim.Value);
-        }
+        // var result = await AuthService.IsExpiredTokenAsync();
+        // if (result)
+        // {
+        //     NavManager.NavigateTo("/login");
+        // }
     }
 
 
@@ -46,11 +42,29 @@
         var result = await HttpClient.PostAsync(HttpClient.BaseAddress + "api/Auth/check-admin", null);
         if (result.IsSuccessStatusCode)
         {
-            Console.WriteLine("You're admin");
+            text = "You're admin";
         }
         else
         {
-            Console.WriteLine("You're not admin");
+            text = "You're not admin";
+        }
+    }
+
+    private async void CheckUser()
+    {
+        // var result = await HttpClient.PostAsync(HttpClient.BaseAddress + "api/Auth/check-user", null);
+
+        var _httpClient = Factory.CreateClient("SecuredServer");
+        var result = await _httpClient.PostAsync(_httpClient.BaseAddress + "api/Auth/check-user", null);
+
+        if (result.IsSuccessStatusCode)
+        {
+            text = "You're user";
+        }
+        else if(result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+        {
+            await AuthStateProvider.GetAuthenticationStateAsync();
+            NavManager.NavigateTo("/login");
         }
     }
 }
