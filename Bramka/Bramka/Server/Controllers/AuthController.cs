@@ -78,6 +78,7 @@ namespace Bramka.Server.Controllers
             var refreshToken = Request.Cookies["refreshToken"];
             if (refreshToken is null)
             {
+                Response.Cookies.Delete("refreshToken");
                 return Unauthorized("Refresh token is empty");
             }
 
@@ -88,11 +89,15 @@ namespace Bramka.Server.Controllers
             }
             catch (Exception ex)
             {
+
                 return BadRequest(new { ex.Message });
             }
 
             if (user.TokenExpires < DateTime.Now)
+            {
+                Response.Cookies.Delete("refreshToken");
                 return Unauthorized("Token expired");
+            }
 
             var userRole = await _roleService.GetRoleByIdAsync(user.RoleId);
             string token = CreateToken(user, userRole.Name);
@@ -112,7 +117,14 @@ namespace Bramka.Server.Controllers
         }
 
         [HttpPost("check-admin"), Authorize(Roles = "Admin")]
-        public async Task<IActionResult> checkAdmin()
+        public async Task<IActionResult> CheckAdmin()
+        {
+
+            return Ok();
+        }
+
+        [HttpPost("check-user"), Authorize(Roles = "User")]
+        public async Task<IActionResult> CheckUser()
         {
 
             return Ok();
