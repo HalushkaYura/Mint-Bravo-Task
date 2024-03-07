@@ -1,0 +1,406 @@
+﻿.style-wrapper {
+    min-height: 100vh;
+    height: 100%;
+    padding-bottom: 5vh;
+    --s14: 14px;
+    --s16: 16px;
+    --s18: 18px;
+    --s20: 20px;
+    --s24: 24px;
+    --s28: 28px;
+    --s30: 30px;
+    --s40: 40px;
+    --s50: 50px;
+    --s60: 60px;
+
+    span, h1, a {
+        color: white;
+    }
+
+    .pop-up-alert {
+        display: flex;
+        position: absolute;
+        top: 13vh;
+        left: 50%;
+        transform: translate(-50%);
+
+        span {
+            font-size: var(--s30);
+            font-weight: 300;
+        }
+
+        p {
+            color: white;
+            font-size: var(--s18);
+            font-weight: 300;
+        }
+    }
+
+    .main {
+        display: flex;
+
+        .buttons {
+            h1 {
+                font-size: var(--s40);
+                font-weight: 500;
+            }
+
+            input {
+                text-align: center;
+                font-weight: 600;
+                border: none;
+            }
+
+            input::placeholder {
+                text-align: center;
+                color: black;
+                font-weight: 600;
+                font-size: var(--s18);
+            }
+
+            width: 40vw;
+        }
+
+        .dropdown {
+            button {
+                background-color: #7000FF;
+                border: none;
+                width: 20vw;
+                height: 7vh;
+                margin-bottom: 3vh !important;
+                font-weight: 400;
+                font-size: var(--s18);
+            }
+
+            .dropdown-menu {
+                background-color: black;
+                border: 2px solid white;
+                margin-top: 1vh !important;
+                width: 20vw;
+                text-align: center;
+
+                li {
+                    margin: 2vh;
+
+                    span {
+                        border-bottom: 2px solid white;
+                        font-size: var(--s18);
+                    }
+                }
+            }
+        }
+
+        img {
+            height: 50vh;
+        }
+
+        b {
+            color: white;
+            font-weight: 600;
+            font-size: var(--s20);
+        }
+    }
+
+    .main-phone {
+        display: none;
+        flex-direction: column;
+
+        h1 {
+            font-size: var(--s40);
+            font-weight: 500;
+        }
+
+        img {
+            width: 80vw;
+            ;
+        }
+
+        b {
+            color: white;
+            font-weight: 600;
+            font-size: var(--s20);
+        }
+
+        .buttons {
+            width: 40vw;
+
+            input {
+                text-align: center;
+                font-weight: 600;
+                border: none;
+                height: 8vh;
+                font-size: var(--s24);
+            }
+
+            input::placeholder {
+                text-align: center;
+                color: black;
+                font-weight: 600;
+                font-size: var(--s24);
+            }
+
+            .dropdown {
+                button {
+                    background-color: #7000FF;
+                    border: none;
+                    width: 80vw;
+                    height: 8vh;
+                    font-weight: 400;
+                    font-size: var(--s18);
+                }
+
+                .dropdown-menu {
+                    background-color: black;
+                    border: 2px solid white;
+                    margin-top: 1vh !important;
+                    width: 80vw;
+                    text-align: center;
+
+                    li {
+                        margin: 2vh;
+
+                        span {
+                            border-bottom: 2px solid white;
+                            font-size: var(--s18);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .block {
+        padding-top: 10vh;
+        padding-left: 6vw;
+        padding-right: 6vw;
+    }
+
+    h1 {
+        color: white;
+        margin-bottom: 8vh;
+        text-align: center;
+    }
+
+    .btn-purple {
+        background-color: #7000FF;
+        border: none;
+        width: 20vw;
+        height: 7vh;
+        border-radius: 5px;
+
+        span {
+            font-weight: 600;
+            font-size: var(--s30);
+        }
+    }
+
+    .link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 2vh;
+
+        button {
+            height: 5vh;
+            width: 10vw;
+            border: none;
+            cursor: pointer;
+            background-color: #3D008A;
+            margin-right: 4vw;
+
+            span {
+                font-weight: 300;
+                font-size: var(--s20);
+            }
+        }
+
+        div {
+            border: 1px solid white;
+            height: 5vh;
+            display: flex;
+            align-items: center;
+            padding-left: 1vw;
+            padding-right: 1vw;
+            background-color: white;
+
+            span {
+                color: black;
+                font-weight: 400;
+                font-size: var(--s18);
+            }
+        }
+    }
+
+    .instruction {
+        margin-top: auto;
+        display: flex;
+        bottom: 2vh;
+        width: 100%;
+        margin-bottom: 2vh;
+
+        div {
+            border: 3px solid white;
+            padding: 2vh;
+
+            span {
+                font-weight: 500;
+                font-size: var(--s20);
+            }
+        }
+    }
+}
+@media screen and (max-width: 1250px) {
+    .style-wrapper {
+        --s20: 16px;
+        --s30: 20px;
+        --s50: 40px;
+    }
+    .btn-purple{
+        height: 5vh !important;
+    }
+    .main{
+        input{
+            width: 30vw !important;
+        }
+        img{
+            height: 30vh !important;
+        }
+        .dropdown{
+            button{
+                font-size: 12px !important;
+            }
+        }
+    }
+    
+}
+@media screen and (max-width: 980px) {
+    .style-wrapper {
+        --s20: 14px;
+        --s30: 18px;
+        --s40: 30px;
+        --s50: 38px;
+    }
+    .main{
+        .dropdown{
+            button{
+                font-size: 10px !important;
+            }
+        }
+    }
+    .link{
+        button{
+            width: 15vw !important;
+        }
+    }
+
+
+
+}
+@media screen and (max-width: 767px) {
+    .style-wrapper {
+        --s18: 25px;
+        --s20: 20px;
+        --s30: 30px;
+        --s40: 40px;
+    }
+    .pop-up-alert{
+        display: none !important;
+    }
+    .main{
+        display: none !important;
+    }
+    .main-phone{
+        display: flex !important;
+        .buttons{
+            margin-top: 2vh !important;
+            margin-left: auto;
+            margin-right: auto;
+            width: 80vw !important;
+        }
+    }
+    .btn-purple{
+        width: 100% !important;
+        height: 8vh !important;
+        border-radius: 10px !important;
+    }
+
+    .instruction{
+        display: none !important;
+    }
+    h1{
+        margin-bottom: 3vh !important;
+        margin-top: 3vh !important;
+    }
+    .link{
+        flex-direction: column;
+        width: 90vw !important;
+        justify-content: space-between !important;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2vh;
+        button{
+            width: 40vw !important;
+            margin-top: 2vh !important;
+            margin-bottom: 5vh !important;
+            margin-right: 0 !important;
+        }
+
+    }
+
+
+}
+@media screen and (max-height: 600px)  {
+    .style-wrapper {
+        --s18: 25px;
+        --s20: 25px;
+    }
+
+    .main{
+        img{
+            height: 80vh !important;
+        }
+        img, b{
+            margin-right: 5vw !important;
+        }
+    }
+    .main-phone{
+        input{
+            height: 15vh !important;
+        }
+        .dropdown{
+            button{
+                height: 15vh !important;
+
+            }
+        }
+    }
+    .btn-purple{
+        height: 15vh !important;
+    }
+    .link{
+        margin-top: 10vh !important;
+        @media screen and (min-width: 768px) {     
+            button{
+                width: 15vw !important;
+            }
+        }
+        button{
+            width: 30vw !important;
+        }
+        button, div{
+            height: 15vh !important;
+        }
+    }
+
+}
+@media screen and (max-width: 500px) {
+    .style-wrapper {
+        --s14: 14px;
+        --s16: 16px;
+        --s18: 20px;
+        --s20: 18px;
+        --s30: 30px;
+        --s40: 30px;
+        --s50: 20px;
+    }
+}

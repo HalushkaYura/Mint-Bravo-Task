@@ -18,14 +18,22 @@
 
 	<ItemGroup>
 		<Watch Include="**/*.scss" />
+		<None Remove="Pages\AuthHomePage.razor.scss" />
 		<None Remove="Pages\Components\Header.razor.scss" />
+		<None Remove="Pages\Components\LoginForm.razor.scss" />
+		<None Remove="Pages\Components\NewPassword.razor.scss" />
 		<None Remove="Pages\Components\ProfileNav.razor.scss" />
+		<None Remove="Pages\Components\RestorePasswordForm.razor.scss" />
 		<None Remove="Pages\History.razor.scss" />
 		<None Remove="Pages\Login.razor.scss" />
 		<None Remove="Pages\Profile.razor.scss" />
 		<None Remove="Pages\Registration.razor.scss" />
+		<Watch Remove="Pages\AuthHomePage.razor.scss" />
 		<Watch Remove="Pages\Components\Header.razor.scss" />
+		<Watch Remove="Pages\Components\LoginForm.razor.scss" />
+		<Watch Remove="Pages\Components\NewPassword.razor.scss" />
 		<Watch Remove="Pages\Components\ProfileNav.razor.scss" />
+		<Watch Remove="Pages\Components\RestorePasswordForm.razor.scss" />
 		<Watch Remove="Pages\History.razor.scss" />
 		<Watch Remove="Pages\Index.razor.scss" />
 		<Watch Remove="Pages\Login.razor.scss" />
@@ -33,8 +41,12 @@
 		<Watch Remove="Pages\Registration.razor.scss" />
 		<Watch Remove="Pages\Statistic.razor.scss" />
 		<Watch Remove="Shared\MainLayout.razor.scss" />
+		<Content Include="Pages\AuthHomePage.razor.scss" />
 		<Content Include="Pages\Components\Header.razor.scss" />
+		<Content Include="Pages\Components\LoginForm.razor.scss" />
+		<Content Include="Pages\Components\NewPassword.razor.scss" />
 		<Content Include="Pages\Components\ProfileNav.razor.scss" />
+		<Content Include="Pages\Components\RestorePasswordForm.razor.scss" />
 		<Content Include="Pages\History.razor.scss" />
 		<Content Include="Pages\Login.razor.scss" />
 		<Content Include="Pages\Profile.razor.scss" />

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bramka.Server", "Bramka\Server\Bramka.Server.csproj", "{8FB61B08-DDEB-4B30-81B8-BBF37D825FD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bramka.Server", "Bramka\Server\Bramka.Server.csproj", "{8FB61B08-DDEB-4B30-81B8-BBF37D825FD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bramka.Client", "Bramka\Client\Bramka.Client.csproj", "{E54928B8-A0ED-44E8-9311-AADD41FC97D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bramka.Client", "Bramka\Client\Bramka.Client.csproj", "{E54928B8-A0ED-44E8-9311-AADD41FC97D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bramka.Shared", "Bramka\Shared\Bramka.Shared.csproj", "{BA22E284-A590-4222-8F32-70ED4DB5C396}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bramka.Shared", "Bramka\Shared\Bramka.Shared.csproj", "{BA22E284-A590-4222-8F32-70ED4DB5C396}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

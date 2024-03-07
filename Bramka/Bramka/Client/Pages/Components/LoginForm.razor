@@ -1,0 +1,34 @@
+﻿
+<div class="style-wrapper">
+    <h1>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa, fugit!</h1>
+    <div style="height: 100%; display: block;">
+
+        <div class="login d-flex flex-column align-items-center mb-5">
+            <span class="paragraph" style="margin-bottom: 2vh;">LOGIN</span>
+            <div class="d-flex flex-column">
+                <input type="text" class="form-control" placeholder="email">
+                <div style="position: relative;">
+                    <input type="@(ToglePassword ? "password" : "text")" class="form-control" placeholder="password">
+                    @if (ToglePassword)
+                    {
+                        <img @onclick="()=>ToglePassword=!ToglePassword" src="/source/icons/eye slash.svg" alt="hiden">
+                    } else
+                    {
+                        <img @onclick="()=>ToglePassword=!ToglePassword" src="/source/icons/eye.svg" alt="show">    
+                    }
+                </div>
+                <button style="border: none; background-color: transparent">
+                    <span @onclick="ForgotPass" style="margin-top: 1vh; margin-bottom: 3vh;">forgot the password?</span>
+                </button>
+            </div>
+            <button class="btn-purple"><span>LOGIN</span></button>
+            <span style="font-weight: 500;">or</span>
+            <a href="/registration">create new account</a>
+        </div>
+    </div>
+</div>
+@code{
+    [Parameter]
+    public EventCallback ForgotPass { get; set; }
+    private bool ToglePassword = false;
+}

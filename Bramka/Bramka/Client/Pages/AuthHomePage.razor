@@ -1,0 +1,68 @@
+﻿@page "/auth"
+@inject NavigationManager nav
+<div class="style-wrapper">
+    <Header/>
+    <div class="pop-up-alert flex-column align-items-center">
+        <span>SUCCESS</span>
+        <p >qr code was generated</p>
+    </div>
+
+    <div class="main justify-content-between block" style="position: relative;">
+        <div class="buttons d-flex flex-column align-items-center">
+            <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, fugit.</h1>
+            <input  type="text" class="form-control mb-5" placeholder="write your phrase here" style="width: 20vw;"/>
+            <button class="btn-purple mb-5"><span>GET QR CODE</span></button>
+            <button class="btn-purple"><span>GET QR LINK</span></button>
+        </div>
+        <div class="d-flex flex-column align-items-center">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  Already generated phrases
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><span>code1</span></li>
+                  <li><span>code2</span></li>
+                  <li><span>code3</span></li>
+                </ul>
+              </div>
+            <img alt ="" src="" class="mb-3"/>
+            <b>last update 20.02</b>
+        </div>
+    </div>
+
+    <div class="main-phone">
+        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, fugit.</h1>
+        <div class="d-flex flex-column align-items-center">
+            <img alt ="" src="" class="mb-3"/>
+            <b>last update 20.02</b>
+        </div>
+        <div class="buttons d-flex flex-column align-items-center">
+            <input  type="text" class="form-control mb-4" placeholder="write your phrase here" style="width: 80vw;"/>
+            <div class="dropdown mb-5">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                  Already generated phrases
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><span>code1</span></li>
+                  <li><span>code2</span></li>
+                  <li><span>code3</span></li>
+                </ul>
+              </div>
+            <button class="btn-purple mb-4"><span>GET QR CODE</span></button>
+            <button class="btn-purple"><span>GET QR LINK</span></button>
+        </div>
+    </div>
+
+    <div class="link block">
+        <button><span>COPY URL</span></button>
+        <div>
+            <span>https://www.bravo.team/guest/id43432</span>
+        </div>
+    </div>
+
+    <div class="instruction justify-content-between block">
+        <div><span>1. Lorem ipsum dolor sit.</span></div>
+        <div class="ms-2 me-2"><span>2. Lorem ipsum dolor sit amet consectetur adipisicing elit.</span></div>
+        <div><span>3. Lorem ipsum dolor sit.</span></div>
+    </div>
+ </div>

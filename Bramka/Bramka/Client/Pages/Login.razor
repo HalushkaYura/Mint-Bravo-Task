@@ -3,23 +3,33 @@
 <PageTitle>login</PageTitle>
 <div class="style-wrapper">
     <Header/>
-    <h1>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa, fugit!</h1>
-    <div style="height: 100%; display: block;">
-
-        <div class="login d-flex flex-column align-items-center mb-5">
-            <span class="paragraph" style="margin-bottom: 2vh;">LOGIN</span>
-            <div class="d-flex flex-column">
-                <input type="text" class="form-control" placeholder="email">
-                <div style="position: relative;">
-                    <input type="text" class="form-control" placeholder="password">
-                    <img src="/source/icons/eye.svg" alt="show">
-                    <img style="display: none;" src="/source/icons/eye slash.svg" alt="hiden">
-                </div>
-                <a href="" style="margin-top: 1vh; margin-bottom: 3vh;">forgot the password?</a>
-            </div>
-            <button class="btn-purple"><span>LOGIN</span></button>
-            <span style="font-weight: 500;">or</span>
-            <a href="">create new account</a>
-        </div>
-    </div>
+    @if (ShowLogin)
+    {
+        <LoginForm ForgotPass="OpenRestorePass"/>
+    }
+    @if (ShowRestorePassword)
+    {
+        <RestorePasswordForm ShowLogin="ReturnToLogin" ShowNewPassword="()=>ShowNewPassword = true"/>
+    }
+    @if (ShowNewPassword)
+    {
+        <NewPassword ShowLogin="ReturnToLogin" />
+    }
 </div>
+@code{
+    private bool ShowLogin = true;
+    private bool ShowRestorePassword = false;
+    private bool ShowNewPassword = false;
+    private void OpenRestorePass()
+    {
+        ShowRestorePassword = true;
+        ShowLogin = false;
+    }
+    private void ReturnToLogin()
+    {
+        ShowRestorePassword = false;
+        ShowNewPassword = false;
+        ShowLogin = true;
+    }
+
+}
