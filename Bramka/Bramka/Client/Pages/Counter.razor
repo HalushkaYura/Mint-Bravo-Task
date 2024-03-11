@@ -20,16 +20,17 @@
 
 @code {
     private int currentCount = 0;
-    private string text;
+    private string text = "aboba";
+    private bool isShowed = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        // var result = await AuthService.IsExpiredTokenAsync();
-        // if (result)
-        // {
-        //     NavManager.NavigateTo("/login");
-        // }
-    }
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var result = await AuthService.IsExpiredTokenAsync();
+    //     if (result)
+    //     {
+    //         NavManager.NavigateTo("/login");
+    //     }
+    // }
 
 
     private void IncrementCount()
@@ -39,14 +40,18 @@
 
     private async void CheckAdmin()
     {
-        var result = await HttpClient.PostAsync(HttpClient.BaseAddress + "api/Auth/check-admin", null);
+        var _httpClient = Factory.CreateClient("SecuredServer");
+        var result = await _httpClient.PostAsync(_httpClient.BaseAddress + "api/Auth/check-admin", null);
+
         if (result.IsSuccessStatusCode)
         {
             text = "You're admin";
+            StateHasChanged();
         }
         else
         {
             text = "You're not admin";
+            StateHasChanged();
         }
     }
 
@@ -54,17 +59,24 @@
     {
         // var result = await HttpClient.PostAsync(HttpClient.BaseAddress + "api/Auth/check-user", null);
 
+
         var _httpClient = Factory.CreateClient("SecuredServer");
         var result = await _httpClient.PostAsync(_httpClient.BaseAddress + "api/Auth/check-user", null);
 
         if (result.IsSuccessStatusCode)
         {
             text = "You're user";
+            StateHasChanged();
         }
         else if(result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
         {
             await AuthStateProvider.GetAuthenticationStateAsync();
             NavManager.NavigateTo("/login");
+        }
+        else
+        {
+            text = "You're not user";
+            StateHasChanged();
         }
     }
 }
