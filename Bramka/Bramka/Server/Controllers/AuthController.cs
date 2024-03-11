@@ -22,12 +22,15 @@ namespace Bramka.Server.Controllers
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
+        private readonly IEmailService _emailService;
 
-        public AuthController(IConfiguration configuration, IUserService userService, IRoleService roleService)
+        public AuthController(IConfiguration configuration, IUserService userService, 
+            IRoleService roleService, IEmailService emailService)
         {
             _configuration = configuration;
             _userService = userService;
             _roleService = roleService;
+            _emailService = emailService;
         }
 
         [HttpPost("register")]
@@ -38,7 +41,17 @@ namespace Bramka.Server.Controllers
                 return BadRequest("Account with this email is already created");
             }
 
-            await _userService.CreateUserAsync(request);
+            Guid guid;
+            try
+            {
+                guid = await _userService.CreateUserAsync(request);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            await _emailService.CreateVerificationCodeAsync(guid.ToString());
 
             return Ok("User is successfully created");
         }
@@ -116,15 +129,30 @@ namespace Bramka.Server.Controllers
             return Ok(token);
         }
 
+
+        [HttpGet]
+        [Route("confirmation")]
+        public async Task<ActionResult<string>> ConfirmEmail(string code)
+        {
+            Console.WriteLine(code);
+            var response = await _emailService.ConfirmEmailAsync(code);
+            if(response > 1)
+            {
+                return Redirect("/confirmation?status=success");
+            }
+
+            return Redirect("/confirmation?status=fail");
+        }
+
         [HttpPost("check-admin"), Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CheckAdmin()
+        public IActionResult CheckAdmin()
         {
 
             return Ok();
         }
 
-        [HttpPost("check-user"), Authorize(Roles = "User")]
-        public async Task<IActionResult> CheckUser()
+        [HttpPost("check-user"), Authorize(Roles = "User,Admin")]
+        public IActionResult CheckUser()
         {
 
             return Ok();
