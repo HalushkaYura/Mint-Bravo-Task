@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[VerificationCodes]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY (1, 1), 
+    [UserId] UNIQUEIDENTIFIER NOT NULL, 
+    [Code] NVARCHAR(255) NOT NULL, 
+    [CreatedAt] DATETIME NOT NULL DEFAULT GETDATE()
+)

@@ -46,6 +46,7 @@ namespace Bramka
             builder.Services.AddScoped<ILogService, LogService>();
             builder.Services.AddScoped<IQrCodeService, QrCodeService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
             builder.Services.AddFluentValidation();
             builder.Services.AddTransient<IValidator<UserRegistrationDTO>, UserRegistrationValidation>();

@@ -1,0 +1,9 @@
+﻿@page "/confirmation"
+
+<h3>ConfirmationPage</h3>
+
+<p>@Status</p>
+
+@code {
+    [Parameter, SupplyParameterFromQuery] public string Status { get; set; }
+}
