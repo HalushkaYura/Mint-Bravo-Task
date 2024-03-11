@@ -59,6 +59,7 @@
     <Folder Include="dbo" />
     <Folder Include="dbo\Table" />
     <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Stored Procedures\VerificationCodes" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Table\User.sql" />
@@ -96,6 +97,12 @@
     <Build Include="dbo\Stored Procedures\sp_QRCode_CheckUserHasKey.sql" />
     <Build Include="dbo\Stored Procedures\sp_Users_UpdateRefreshToken.sql" />
     <Build Include="dbo\Stored Procedures\sp_Users_GetUserByRefreshToken.sql" />
+    <Build Include="dbo\Table\VerificationCodes.sql" />
+    <Build Include="dbo\Stored Procedures\VerificationCodes\sp_VerificationCodes_CreateCode.sql" />
+    <Build Include="dbo\Stored Procedures\VerificationCodes\sp_VerificationCodes_DeleteCode.sql" />
+    <Build Include="dbo\Stored Procedures\VerificationCodes\sp_VerificationCodes_UpdateCode.sql" />
+    <Build Include="dbo\Stored Procedures\VerificationCodes\sp_VerificationCodes_GetCodeByUserId.sql" />
+    <Build Include="dbo\Stored Procedures\VerificationCodes\sp_VerificationCodes_ConfirmEmail.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Bramka.DataBase.refactorlog" />
