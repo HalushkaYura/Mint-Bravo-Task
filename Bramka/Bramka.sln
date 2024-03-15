@@ -8,6 +8,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bramka.Client", "Bramka\Client\Bramka.Client.csproj", "{E54928B8-A0ED-44E8-9311-AADD41FC97D0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bramka.Shared", "Bramka\Shared\Bramka.Shared.csproj", "{BA22E284-A590-4222-8F32-70ED4DB5C396}"
+<<<<<<< HEAD
+=======
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Bramka.DataBase", "Bramka.DataBase\Bramka.DataBase.sqlproj", "{EE11575E-F29F-486A-A4E3-FE2E6A23E0B5}"
+>>>>>>> 175899cec6b81cd97ae607beea6d4eedeb471a52
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +32,12 @@ Global
 		{BA22E284-A590-4222-8F32-70ED4DB5C396}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA22E284-A590-4222-8F32-70ED4DB5C396}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA22E284-A590-4222-8F32-70ED4DB5C396}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE11575E-F29F-486A-A4E3-FE2E6A23E0B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE11575E-F29F-486A-A4E3-FE2E6A23E0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE11575E-F29F-486A-A4E3-FE2E6A23E0B5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EE11575E-F29F-486A-A4E3-FE2E6A23E0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE11575E-F29F-486A-A4E3-FE2E6A23E0B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE11575E-F29F-486A-A4E3-FE2E6A23E0B5}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

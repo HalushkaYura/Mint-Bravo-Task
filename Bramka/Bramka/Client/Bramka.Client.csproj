@@ -8,8 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
+    <PackageReference Include="Blazorise.Bootstrap" Version="1.4.2" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.4.2" />
+    <PackageReference Include="Blazorise.QRCode" Version="1.4.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.13" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="Radzen.Blazor" Version="4.25.12" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +36,7 @@
 		<None Remove="Pages\Login.razor.scss" />
 		<None Remove="Pages\Profile.razor.scss" />
 		<None Remove="Pages\Registration.razor.scss" />
+		<Watch Remove="Pages\AdminPage.razor.scss" />
 		<Watch Remove="Pages\AuthHomePage.razor.scss" />
 		<Watch Remove="Pages\Components\Header.razor.scss" />
 		<Watch Remove="Pages\Components\LoginForm.razor.scss" />
@@ -40,7 +49,6 @@
 		<Watch Remove="Pages\Profile.razor.scss" />
 		<Watch Remove="Pages\Registration.razor.scss" />
 		<Watch Remove="Pages\Statistic.razor.scss" />
-		<Watch Remove="Shared\MainLayout.razor.scss" />
 		<Content Include="Pages\AuthHomePage.razor.scss" />
 		<Content Include="Pages\Components\Header.razor.scss" />
 		<Content Include="Pages\Components\LoginForm.razor.scss" />

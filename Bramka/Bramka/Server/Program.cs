@@ -1,4 +1,17 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using Bramka.Server.Interfaces;
+using Bramka.Server.Services;
+using Bramka.Shared.DTOs.UserDTO;
+using Bramka.Shared.Interfaces.Services;
+using Bramka.Shared.Validations;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using System.Data.SqlClient;
+using System.Data;
+using Microsoft.Extensions.Configuration;
+using Bramka.Shared.DTOs.QrCodeDTO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Bramka
 {
@@ -12,7 +25,34 @@ namespace Bramka
 
 
             builder.Services.AddSwaggerGen(options => { });
-            
+            var configuration = builder.Configuration;
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                        builder.Configuration.GetSection("AppSettings:Token").Value!)),
+                };
+            });
+
+            builder.Services.AddScoped<IDbConnection>(_ => new SqlConnection(connectionString));
+
+
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ILogService, LogService>();
+            builder.Services.AddScoped<IQrCodeService, QrCodeService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
+
+            builder.Services.AddFluentValidation();
+            builder.Services.AddTransient<IValidator<UserRegistrationDTO>, UserRegistrationValidation>();
+            builder.Services.AddTransient<IValidator<UserEditDTO>, UserEditValidation>();
+            builder.Services.AddTransient<IValidator<UserSetPasswordDTO>, UserSetPasswordValidation>();
+            builder.Services.AddTransient<IValidator<QrCodeCreateDTO>, QrCodeCreateValidation>();
+
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
@@ -39,7 +79,7 @@ namespace Bramka
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthorization();
 
             app.MapRazorPages();
             app.MapControllers();

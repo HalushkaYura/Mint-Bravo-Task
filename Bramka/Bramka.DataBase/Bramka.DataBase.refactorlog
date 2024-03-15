@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="27b52428-b1e7-4f7f-acc8-29f439e4ee99" ChangeDateTime="03/02/2024 09:13:35">
+    <Property Name="ElementName" Value="[dbo].[User].[Users Key UserId * Name * Surename * PasswordHash * Email * BirthDate  Phone number * CreatedAt  RefreshToken  TokenCreated  Tok]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[User]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RefreshToken" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9883b34c-ba37-4a19-b03c-aa600fec669c" ChangeDateTime="03/02/2024 09:15:12">
+    <Property Name="ElementName" Value="[dbo].[QrCode].[Code]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[QrCode]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CodeHash" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9a177b5b-e6cf-41f9-9d81-deb33e12724c" ChangeDateTime="03/02/2024 09:15:21">
+    <Property Name="ElementName" Value="[dbo].[QrCode].[ExpirationDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[QrCode]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="GenerationCount" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="62f62cbc-34d8-4c4d-85e8-bb60bb0a37f1" ChangeDateTime="03/02/2024 09:15:37">
+    <Property Name="ElementName" Value="[dbo].[QrCode].[UseDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[QrCode]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedAt" />
+  </Operation>
+</Operations>

@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[QrCode]
+(   
+	[QrCodeId] INT NOT NULL PRIMARY KEY IDENTITY (1, 1), 
+    [CodeHash] NVARCHAR(MAX) NOT NULL, 
+    [GenerationCount] INT NOT NULL DEFAULT 0, 
+    [CreatedAt] DATETIME NOT NULL DEFAULT GETDATE() , 
+    [UserId] UNIQUEIDENTIFIER NULL,
+
+    FOREIGN KEY ([UserId]) REFERENCES [dbo].[User]([UserId]) ON DELETE CASCADE
+);
