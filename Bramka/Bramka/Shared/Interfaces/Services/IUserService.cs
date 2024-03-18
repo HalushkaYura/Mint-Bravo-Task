@@ -17,6 +17,7 @@ namespace Bramka.Server.Interfaces
         bool IsEmailExist(string email);
         Task SendConfirmationEmailAsync(string guid);
         Task SendResetPasswordEmailAsync(string? email, string? name);
+        Task<int> ResetPasswordAsync(string code, string password);
 
 
         //----------------------------------------------------------

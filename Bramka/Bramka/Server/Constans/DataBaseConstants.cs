@@ -65,6 +65,8 @@ namespace Bramka.Server.Constans
         public const string UpdateVerificationCode = "sp_VerificationCodes_UpdateCode";
         public const string DeleteVerificationCode = "sp_VerificationCodes_DeleteCode";
         public const string ConfirmEmail = "sp_VerificationCodes_ConfirmEmail";
+        public const string ResetPassword = "sp_VerificationCodes_ResetPassword";
+
         #endregion
 
     }

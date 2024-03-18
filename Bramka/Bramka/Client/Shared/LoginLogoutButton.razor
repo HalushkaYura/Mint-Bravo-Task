@@ -1,6 +1,7 @@
 ﻿@inject NavigationManager NavManager
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
+@inject HttpClient HttpClient
 
 <AuthorizeView>
     <Authorized>
@@ -28,5 +29,7 @@
     {
         await LocalStorage.RemoveItemAsync("token");
         await AuthStateProvider.GetAuthenticationStateAsync();
+
+        await HttpClient.PostAsync(HttpClient.BaseAddress + "api/Auth/delete/refresh-token", null);
     }
 }

@@ -134,7 +134,6 @@ namespace Bramka.Server.Controllers
         [Route("confirmation")]
         public async Task<ActionResult<string>> ConfirmEmail(string code)
         {
-            Console.WriteLine(code);
             var response = await _emailService.ConfirmEmailAsync(code);
             if(response > 1)
             {
@@ -142,6 +141,14 @@ namespace Bramka.Server.Controllers
             }
 
             return Redirect("/confirmation?status=fail");
+        }
+
+        [HttpPost]
+        [Route("delete/refresh-token")]
+        public IActionResult DeleteRefreshToken()
+        {
+            Response.Cookies.Delete("refreshToken");
+            return Ok();
         }
 
         [HttpPost("check-admin"), Authorize(Roles = "Admin")]

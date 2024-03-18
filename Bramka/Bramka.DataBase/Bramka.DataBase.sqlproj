@@ -103,6 +103,7 @@
     <Build Include="dbo\Stored Procedures\VerificationCodes\sp_VerificationCodes_UpdateCode.sql" />
     <Build Include="dbo\Stored Procedures\VerificationCodes\sp_VerificationCodes_GetCodeByUserId.sql" />
     <Build Include="dbo\Stored Procedures\VerificationCodes\sp_VerificationCodes_ConfirmEmail.sql" />
+    <Build Include="dbo\Stored Procedures\VerificationCodes\sp_VerificationCodes_ResetPassword.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Bramka.DataBase.refactorlog" />

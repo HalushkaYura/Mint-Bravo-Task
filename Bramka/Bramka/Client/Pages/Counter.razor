@@ -1,7 +1,9 @@
 ﻿@page "/counter"
+@attribute [Authorize]
 @inject NavigationManager NavManager
 @inject HttpClient HttpClient
 @inject IHttpClientFactory Factory
+@inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
 
 
@@ -93,5 +95,10 @@
     {
         var _httpClient = Factory.CreateClient("SecuredServer");
         var result = await _httpClient.PostAsync(_httpClient.BaseAddress + "api/User/reset-password", null);
+
+        await LocalStorage.RemoveItemAsync("token");
+        await AuthStateProvider.GetAuthenticationStateAsync();
+
+        await HttpClient.PostAsync(HttpClient.BaseAddress + "api/Auth/delete/refresh-token", null);
     }
 }

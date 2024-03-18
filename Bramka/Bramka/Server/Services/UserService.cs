@@ -1,4 +1,5 @@
-﻿using Bramka.Server.Constans;
+﻿using BCrypt.Net;
+using Bramka.Server.Constans;
 using Bramka.Server.Interfaces;
 using Bramka.Shared.DTOs.UserDTO;
 using Bramka.Shared.Interfaces.Services;
@@ -200,6 +201,21 @@ namespace Bramka.Server.Services
             User user = await GetUserByEmailAsync(email);
 
             await _emailService.SendResetPasswordEmailAsync(user);
+        }
+
+        public async Task<int> ResetPasswordAsync(string code, string password)
+        {
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
+            var response = await _connection.ExecuteAsync(DataBaseConstants.ResetPassword,
+                new
+                {
+                    Code = code,
+                    PasswordHash = passwordHash,
+                },
+                commandType: CommandType.StoredProcedure);
+
+            return response;
         }
     }
 }
