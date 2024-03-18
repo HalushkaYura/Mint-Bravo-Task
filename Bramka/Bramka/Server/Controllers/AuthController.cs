@@ -51,7 +51,7 @@ namespace Bramka.Server.Controllers
                 return BadRequest(ex.Message);
             }
 
-            await _emailService.CreateVerificationCodeAsync(guid.ToString());
+            await _userService.SendConfirmationEmailAsync(guid.ToString());
 
             return Ok("User is successfully created");
         }

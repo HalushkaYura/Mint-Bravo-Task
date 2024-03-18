@@ -1,5 +1,4 @@
 ﻿@page "/counter"
-@attribute [Authorize]
 @inject NavigationManager NavManager
 @inject HttpClient HttpClient
 @inject IHttpClientFactory Factory
@@ -15,8 +14,18 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 <button class="btn btn-primary" @onclick="CheckUser">Check User</button>
 <button class="btn btn-primary" @onclick="CheckAdmin">Check Admin</button>
+<button class="btn btn-primary" @onclick="ResetPassword">Reset password</button>
 
 <p>@text</p>
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        you're admin
+    </Authorized>
+    <NotAuthorized>
+        you're not admin
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     private int currentCount = 0;
@@ -38,7 +47,7 @@
         currentCount++;
     }
 
-    private async void CheckAdmin()
+    private async Task CheckAdmin()
     {
         var _httpClient = Factory.CreateClient("SecuredServer");
         var result = await _httpClient.PostAsync(_httpClient.BaseAddress + "api/Auth/check-admin", null);
@@ -55,7 +64,7 @@
         }
     }
 
-    private async void CheckUser()
+    private async Task CheckUser()
     {
         // var result = await HttpClient.PostAsync(HttpClient.BaseAddress + "api/Auth/check-user", null);
 
@@ -78,5 +87,11 @@
             text = "You're not user";
             StateHasChanged();
         }
+    }
+
+    private async Task ResetPassword()
+    {
+        var _httpClient = Factory.CreateClient("SecuredServer");
+        var result = await _httpClient.PostAsync(_httpClient.BaseAddress + "api/User/reset-password", null);
     }
 }

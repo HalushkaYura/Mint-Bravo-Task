@@ -9,8 +9,8 @@ namespace Bramka.Shared.Interfaces.Services
 {
     public interface IEmailService
     {
-        Task SendConfirmEmailAsync(string userId, string code);
-        Task CreateVerificationCodeAsync(string userId);
+        Task SendConfirmEmailAsync(User user);
         Task<int> ConfirmEmailAsync(string code);
+        Task SendResetPasswordEmailAsync(User user);
     }
 }

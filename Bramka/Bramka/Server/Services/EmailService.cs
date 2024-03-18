@@ -6,24 +6,24 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Data;
 using Dapper;
+using System.Text;
+using System.Text.Json;
 
 
 namespace Bramka.Server.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly IUserService _userService;
         private readonly IDbConnection _connection;
         private readonly string _apiKey;
 
-        public EmailService(IConfiguration configuration, IUserService userService, IDbConnection dbConnection)
+        public EmailService(IConfiguration configuration, IDbConnection dbConnection)
         {
             _connection = dbConnection;
             _apiKey = configuration["SendGridApiKey"]!;
-            _userService = userService;
         }
 
-        public async Task SendConfirmEmailAsync(string userId, string code)
+        public async Task SendConfirmEmailAsync(User user)
         {
             #region SendGrid without SendGridMessage
             //var client = new SendGridClient(_apiKey);
@@ -47,7 +47,7 @@ namespace Bramka.Server.Services
             //    "Confirm");
             #endregion
 
-            User user = await _userService.GetUserByIdAsync(new Guid(userId));
+            var code = await CreateVerificationCodeAsync(user.UserId.ToString());
 
             var client = new SendGridClient(_apiKey);
 
@@ -59,6 +59,32 @@ namespace Bramka.Server.Services
             msg.SetTemplateData(new
             {
                 confirmationEmailAddress = $"https://localhost:7218/api/Auth/confirmation?code={code}"
+            });
+
+            var response = await client.SendEmailAsync(msg);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK && response.StatusCode != System.Net.HttpStatusCode.Accepted)
+            {
+                throw new Exception($"Failed to send email. Status code: {response.StatusCode}");
+            }
+        }
+
+        public async Task SendResetPasswordEmailAsync(User user)
+        {
+            var code = await CreateVerificationCodeAsync(user.UserId.ToString());
+
+            await Console.Out.WriteLineAsync("Code: " + code);
+
+            var client = new SendGridClient(_apiKey);
+
+            var msg = new SendGridMessage();
+
+            msg.SetTemplateId("d-ac614a2253024666a7862aa6fff039bd");
+            msg.SetFrom(new EmailAddress("nyshchyi.nazar@gmail.com", "Bramka Team"));
+            msg.AddTo(new EmailAddress(user.Email, user.Name));
+            msg.SetTemplateData(new
+            {
+                resetPassword = $"https://localhost:7218/reset-password?code={code}"
             });
 
             var response = await client.SendEmailAsync(msg);
@@ -81,9 +107,9 @@ namespace Bramka.Server.Services
             return response;
         }
 
-        public async Task CreateVerificationCodeAsync(string userId)
+        private async Task<string?> CreateVerificationCodeAsync(string userId)
         {
-            var code = GenerateRandomCode();
+            var code = GenerateVerificationCode();
 
             var result = await _connection.ExecuteScalarAsync(DataBaseConstants.CreateVerificationCode,
                 new
@@ -93,13 +119,42 @@ namespace Bramka.Server.Services
                 },
                 commandType: CommandType.StoredProcedure);
 
-            Console.WriteLine(result);
-            await SendConfirmEmailAsync(userId, code);
+            return code;
+
+            #region 
+            //var verCode = new VerificationCode()
+            //{
+            //    Code = GenerateVerificationCode(),
+            //    Type = "VerificationEmail",
+            //};
+
+            //var byteCode = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(verCode));
+            //var convertedCode = Convert.ToBase64String(byteCode);
+
+            //var result = await _connection.ExecuteScalarAsync(DataBaseConstants.CreateVerificationCode,
+            //    new
+            //    {
+            //        UserId = userId,
+            //        verCode.Code,
+            //    },
+            //    commandType: CommandType.StoredProcedure);
+
+            //Console.WriteLine(result);
+            //await SendConfirmEmailAsync(userId, convertedCode);
+            #endregion
+
+            
         }
 
-        private string GenerateRandomCode()
+        private string GenerateVerificationCode()
         {
             return Guid.NewGuid().ToString().Replace("-", "").Substring(0, 25);
         }
     }
+
+    //class VerificationCode
+    //{
+    //    public string Code { get; set; }
+    //    public string Type { get; set; }
+    //}
 }

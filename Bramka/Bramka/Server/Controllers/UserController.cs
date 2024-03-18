@@ -2,9 +2,11 @@
 using Bramka.Shared.DTOs.UserDTO;
 using Bramka.Shared.Interfaces.Services;
 using Bramka.Shared.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Bramka.Server.Controllers
 {
@@ -91,6 +93,30 @@ namespace Bramka.Server.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost]
+        [Route("reset-password")]
+        public async Task<IActionResult> ResetPassword()
+        {
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var name = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+
+            await Console.Out.WriteLineAsync(email);
+            await Console.Out.WriteLineAsync(name);
+
+            await _userService.SendResetPasswordEmailAsync(email, name);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("reset-password/confirm")]
+        public async Task<IActionResult> ResetPasswordConfirm(string? code)
+        {
+            await Console.Out.WriteLineAsync("Reset password, code: " + code);
+
+            return Ok();
         }
     }
 }
