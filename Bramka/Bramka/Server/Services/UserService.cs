@@ -193,12 +193,20 @@ namespace Bramka.Server.Services
             await _emailService.SendConfirmEmailAsync(user);
         }
 
-        public async Task SendResetPasswordEmailAsync(string? email, string? name)
+        public async Task SendResetPasswordEmailAsync(string? email)
         {
             if (email == null)
                 throw new ArgumentNullException(nameof(email));
 
-            User user = await GetUserByEmailAsync(email);
+            User user = new();
+            try
+            {
+                user = await GetUserByEmailAsync(email);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("User is not found");
+            }
 
             await _emailService.SendResetPasswordEmailAsync(user);
         }
