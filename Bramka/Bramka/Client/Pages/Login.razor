@@ -3,21 +3,21 @@
 
 <PageTitle>login</PageTitle>
 <div class="style-wrapper">
-    <Header/>
+    <Header />
     @if (ShowLogin)
     {
-        <LoginForm ForgotPass="OpenRestorePass"/>
+        <LoginForm ForgotPass="OpenRestorePass" />
     }
     @if (ShowRestorePassword)
     {
-        <RestorePasswordForm ShowLogin="ReturnToLogin" ShowNewPassword="()=>ShowNewPassword = true"/>
+        <RestorePasswordForm ShowLogin="ReturnToLogin" ShowNewPassword="()=>ShowNewPassword = true" />
     }
     @if (ShowNewPassword)
     {
         <NewPassword ShowLogin="ReturnToLogin" />
     }
 </div>
-@code{
+@code {
     private bool ShowLogin = true;
     private bool ShowRestorePassword = false;
     private bool ShowNewPassword = false;
@@ -34,4 +34,3 @@
     }
 
 }
-

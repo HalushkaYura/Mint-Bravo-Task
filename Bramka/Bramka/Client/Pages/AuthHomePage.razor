@@ -1,4 +1,5 @@
 ﻿@page "/auth"
+@attribute [Authorize(Roles = "User Admin")]
 @inject NavigationManager nav
 <div class="style-wrapper">
     <Header/>

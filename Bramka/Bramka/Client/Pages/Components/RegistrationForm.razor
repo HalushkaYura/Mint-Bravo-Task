@@ -1,0 +1,114 @@
+﻿@using Bramka.Server.Interfaces
+@using Bramka.Shared.Validations
+@using System.Text.Json
+@inject HttpClient client
+@inject NavigationManager nav
+<div class="style-wrapper">
+    <h1>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa, fugit!</h1>
+    <EditForm Model="@user" OnValidSubmit="HandleRegister">
+        <DataAnnotationsValidator />
+    <div class="login d-flex flex-column align-items-center">
+        <span class="paragraph" style="margin-bottom: 1vh;text-align: center;">CREATE NEW <p>ACCOUNT</p> </span>
+        <div class="d-flex flex-column">
+            <input @bind="user.Email" type="text" class="form-control" placeholder="email" id="Email" required>
+                <ValidationMessage For="() => user.Email" />
+            <input @bind="user.Name" type="text" class="form-control" placeholder="first name" required>
+                <ValidationMessage For="() => user.Name" />
+            <input @bind="user.Surname" type="text" class="form-control" placeholder="last name" required>
+                <ValidationMessage For="() => user.Surname" />
+
+                <input @bind="user.BirthDate" type="date" class="form-control enchilada" required>
+                <ValidationMessage For="() => user.BirthDate" />
+
+
+            <div style="position: relative;">
+                <input @oninput="@((ChangeEventArgs a)=> passValue = a.Value.ToString())" type="text" class="form-control" placeholder="password" required>
+                <img style="position: absolute; right: 1vw; bottom: 1.25vh;" src="/source/icons/eye.svg" alt="show">
+                <img style="position: absolute; right: 1vw; bottom: 1.25vh; display: none;" src="/source/icons/eye slash.svg" alt="hiden">
+            </div>
+            <div style="position: relative;">
+                <input @oninput="@((ChangeEventArgs a)=> repeatPassValue = a.Value.ToString())" type="text" class="form-control" placeholder="repeat password" required>
+                <img style="position: absolute; right: 1vw; bottom: 1.25vh; display: none;" src="/source/icons/eye.svg" alt="show">
+                <img style="position: absolute; right: 1vw; bottom: 1.25vh;" src="/source/icons/eye slash.svg" alt="hiden">
+            </div>
+                <ValidationMessage For="() => user.Password" />
+            @if (pass != string.Empty || repeatPass != string.Empty)
+            {
+                if (ComparedPassword)
+                {
+                    <p class="text-success">Passwords is equal</p>
+                } else
+                {
+                    <p class="text-danger">Passwords is not equal</p>
+                }
+            }
+
+            <a href="" style="margin-top: 1vh; margin-bottom: 3vh; font-size: 14px;">forgot the password?</a>
+        </div>
+        <button type="submit" class="btn-purple @(ComparedPassword == false ? "disabled" : "active")"><span>REGISTRATION</span></button>
+        <span>already have account?</span>
+        <a href="/login">login</a>
+    </div>
+    </EditForm>
+</div>
+@code {
+    private bool ComparedPassword = false;
+    private string pass = "";
+    private string repeatPass = "";
+    private Errors errorMessage = new();
+    private UserRegistrationDTO user = new UserRegistrationDTO();
+
+
+    private string passValue
+    {
+        get { return pass; }
+        set
+        {
+            pass = value;
+            ComparePassword();
+        }
+    }
+    private string repeatPassValue
+    {
+        get { return repeatPass; }
+        set
+        {
+            repeatPass = value;
+            ComparePassword();
+        }
+    }
+
+    private void ComparePassword()
+    {
+        if (pass == repeatPass)
+        {
+            ComparedPassword = true;
+            user.Password = pass;
+        } else
+        {
+            ComparedPassword = false;
+        }
+        Console.WriteLine($"pass={pass}");
+        Console.WriteLine($"repeatPass={repeatPass}");
+    }
+
+    private async Task HandleRegister()
+    {
+        var result = await client.PostAsJsonAsync("api/Auth/register", user);
+        if (result.IsSuccessStatusCode)
+        {
+            nav.NavigateTo("/");
+        } else
+        {
+            errorMessage = JsonSerializer.Deserialize<Errors>(result.Content.ReadAsStream());
+        }
+    }
+
+
+    private class Errors
+    {
+        public List<string> Email { get; set; }
+        public List<string> Password { get; set; }
+
+    }
+}

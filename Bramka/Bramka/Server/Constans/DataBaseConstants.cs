@@ -58,5 +58,16 @@ namespace Bramka.Server.Constans
 
         #endregion
 
+        #region VerificationCodes
+
+        public const string CreateVerificationCode = "sp_VerificationCodes_CreateCode";
+        public const string GetCodeByUserId = "sp_VerificationCodes_GetCodeByUserId";
+        public const string UpdateVerificationCode = "sp_VerificationCodes_UpdateCode";
+        public const string DeleteVerificationCode = "sp_VerificationCodes_DeleteCode";
+        public const string ConfirmEmail = "sp_VerificationCodes_ConfirmEmail";
+        public const string ResetPassword = "sp_VerificationCodes_ResetPassword";
+
+        #endregion
+
     }
 }

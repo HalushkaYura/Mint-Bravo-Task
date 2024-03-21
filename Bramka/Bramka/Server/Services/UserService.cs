@@ -1,6 +1,8 @@
-﻿using Bramka.Server.Constans;
+﻿using BCrypt.Net;
+using Bramka.Server.Constans;
 using Bramka.Server.Interfaces;
 using Bramka.Shared.DTOs.UserDTO;
+using Bramka.Shared.Interfaces.Services;
 using Bramka.Shared.Models;
 using Dapper;
 using System.Data;
@@ -10,9 +12,12 @@ namespace Bramka.Server.Services
     public class UserService : IUserService
     {
         private readonly IDbConnection _connection;
-        public UserService(IDbConnection dbConnection)
+        private readonly IEmailService _emailService;
+
+        public UserService(IDbConnection dbConnection, IEmailService emailService)
         {
             _connection = dbConnection;
+            _emailService = emailService;
         }
         public async Task<Guid> CreateUserAsync(UserRegistrationDTO newItem)
         {
@@ -179,6 +184,38 @@ namespace Bramka.Server.Services
                         commandType: CommandType.StoredProcedure);
 
             return user == null;
+        }
+
+        public async Task SendConfirmationEmailAsync(string guid)
+        {
+            User user = await GetUserByIdAsync(new Guid(guid));
+
+            await _emailService.SendConfirmEmailAsync(user);
+        }
+
+        public async Task SendResetPasswordEmailAsync(string? email, string? name)
+        {
+            if (email == null)
+                throw new ArgumentNullException(nameof(email));
+
+            User user = await GetUserByEmailAsync(email);
+
+            await _emailService.SendResetPasswordEmailAsync(user);
+        }
+
+        public async Task<int> ResetPasswordAsync(string code, string password)
+        {
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
+            var response = await _connection.ExecuteAsync(DataBaseConstants.ResetPassword,
+                new
+                {
+                    Code = code,
+                    PasswordHash = passwordHash,
+                },
+                commandType: CommandType.StoredProcedure);
+
+            return response;
         }
     }
 }

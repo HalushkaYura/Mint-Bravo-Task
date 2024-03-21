@@ -1,12 +1,14 @@
 ﻿@inject NavigationManager NavManager
 @inject ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
+@inject HttpClient HttpClient
 
 <AuthorizeView>
     <Authorized>
         <button @onclick="Logout" class="btn btn-danger">Logout</button>
     </Authorized>
     <NotAuthorized>
+        <button @onclick="Register" class="btn btn-success me-3">Register</button>
         <button @onclick="Login" class="btn btn-primary">Login</button>
     </NotAuthorized>
 </AuthorizeView>
@@ -18,9 +20,16 @@
         NavManager.NavigateTo("/login");
     }
 
+    void Register()
+    {
+        NavManager.NavigateTo("/register");
+    }
+
     async Task Logout()
     {
         await LocalStorage.RemoveItemAsync("token");
         await AuthStateProvider.GetAuthenticationStateAsync();
+
+        await HttpClient.PostAsync(HttpClient.BaseAddress + "api/Auth/delete/refresh-token", null);
     }
 }
