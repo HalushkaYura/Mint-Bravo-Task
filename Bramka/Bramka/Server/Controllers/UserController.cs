@@ -98,15 +98,20 @@ namespace Bramka.Server.Controllers
 
         [HttpPost]
         [Route("reset-password")]
-        public async Task<IActionResult> ResetPassword()
+        public async Task<IActionResult> ResetPassword([FromBody] string? email)
         {
-            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            var name = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value ?? email;
 
-            await Console.Out.WriteLineAsync(email);
-            await Console.Out.WriteLineAsync(name);
+            if (string.IsNullOrEmpty(email)) return BadRequest("Email is not entered");
 
-            await _userService.SendResetPasswordEmailAsync(email, name);
+            try
+            {
+                await _userService.SendResetPasswordEmailAsync(email);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return Ok();
         }
