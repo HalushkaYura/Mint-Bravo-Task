@@ -1,9 +1,26 @@
 ﻿@page "/"
-
+@inject NavigationManager nav
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="style-wrapper">
 
-Welcome to your new app.
+    <Header/>
+    <div>
+        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, recusandae.</h1>
+        <div class="description-mobile">
+            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati, necessitatibus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos dicta at fugit pariatur, recusandae illo ratione delectus minus provident quibusdam aut perspiciatis corporis quas atque vel excepturi fugiat dignissimos porro.</span>
+        </div>
+    </div>
+    <div class="buttons d-flex flex-column">
+        <button @onclick="@(()=>nav.NavigateTo("/login"))" class="btn-purple"><span>LOGIN</span></button>
+        <button @onclick="@(()=>nav.NavigateTo("/registration"))" class="btn-purple"><span>REGISTRATION</span></button>
+    </div>
+    <div class="info">
+        <a href="">get more info</a>
+    </div>
+    <div class="description">
+        <div class="horizontal"><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, assumenda earum. Sint dicta vel doloribus, facere reiciendis perferendis tenetur laborum incidunt maiores assumenda possimus. Libero vero saepe atque itaque aspernatur!</span></div>
+        <div class="vertical"><span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus ducimus nam quod explicabo rem voluptate nisi minima corrupti qui et ad alias, recusandae repudiandae ipsum ipsam! Accusamus rem assumenda eius?</span></div>
+    </div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+</div>

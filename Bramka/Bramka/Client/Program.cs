@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Http;
 using Bramka.Client.Handlers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
+using Radzen;
 
 
 namespace Bramka.Client
@@ -20,6 +24,14 @@ namespace Bramka.Client
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
+            builder.Services
+                .AddBlazorise(options =>
+                {
+                    options.Immediate = true;
+                })
+                .AddBootstrapProviders()
+                .AddFontAwesomeIcons();
+            builder.Services.AddRadzenComponents();
             builder.Services.AddTransient<AuthenticationHandler>();
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });

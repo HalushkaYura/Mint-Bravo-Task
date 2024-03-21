@@ -1,4 +1,6 @@
-﻿namespace Bramka.Shared.DTOs.UserDTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Bramka.Shared.DTOs.UserDTO
 {
     public class UserRegistrationDTO
     {

@@ -1,0 +1,125 @@
+.style-wrapper {
+  min-height: 100vh;
+  height: 100%;
+  padding-bottom: 5vh;
+  --s14: 14px;
+  --s16: 16px;
+  --s18: 18px;
+  --s20: 20px;
+  --s24: 24px;
+  --s28: 28px;
+  --s30: 30px;
+  --s40: 40px;
+  --s50: 50px;
+  --s60: 60px;
+}
+.style-wrapper span, .style-wrapper h1, .style-wrapper a {
+  color: white;
+}
+.style-wrapper .block {
+  padding-left: 6vw;
+  padding-right: 6vw;
+}
+.style-wrapper .btn-purple {
+  background-color: #7000FF;
+  border: none;
+  width: 20vw;
+  height: 7vh;
+  border-radius: 5px;
+}
+.style-wrapper .btn-purple span {
+  font-size: var(--s30);
+  font-weight: 600;
+}
+.style-wrapper .profile {
+  margin-top: 6vh;
+  border: 2px solid white;
+  border-radius: 5vw;
+  width: 45%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 8vh 0 5vh 0;
+}
+.style-wrapper .profile span, .style-wrapper .profile input::placeholder {
+  color: white;
+}
+.style-wrapper .profile .profile__row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 5vh;
+}
+.style-wrapper .profile .profile__row span {
+  width: 30%;
+}
+.style-wrapper .profile .profile__row input {
+  border: none;
+  background-color: transparent;
+  color: white;
+  border-bottom: 3px solid white;
+  width: 40%;
+  padding-bottom: 1vh;
+  font-size: var(--s20);
+}
+.style-wrapper .profile .profile__row input:focus {
+  outline: none;
+}
+.style-wrapper .profile button {
+  margin-top: 2vh;
+  width: 15vw;
+  height: 5vh;
+}
+.style-wrapper .profile button span {
+  font-size: var(--s20);
+}
+
+@media screen and (max-width: 1250px) {
+  .style-wrapper {
+    --s50: 40px;
+  }
+  .btn-purple {
+    height: 5vh !important;
+  }
+}
+@media screen and (max-width: 980px) {
+  .style-wrapper {
+    --s30: 18px;
+    --s50: 38px;
+  }
+  .profile {
+    width: 60% !important;
+  }
+}
+@media screen and (max-width: 767px) {
+  .style-wrapper {
+    --s20: 16px;
+  }
+  .profile {
+    width: 75% !important;
+  }
+}
+@media screen and (max-height: 600px) {
+  .btn-purple {
+    height: 15vh !important;
+  }
+}
+@media screen and (max-width: 520px) {
+  .style-wrapper {
+    --s14: 14px;
+    --s16: 16px;
+    --s18: 20px;
+    --s20: 14px;
+    --s40: 30px;
+    --s50: 20px;
+  }
+  .profile {
+    width: 90% !important;
+    border-radius: 10vw !important;
+  }
+  .profile button {
+    width: 40vw !important;
+  }
+}
+
+/*# sourceMappingURL=Profile.razor.css.map */

@@ -1,0 +1,57 @@
+﻿@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavManager
+
+<div class="style-wrapper">
+    <h1>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa, fugit!</h1>
+    <div style="height: 100%; display: block;">
+
+        <div class="login d-flex flex-column align-items-center mb-5">
+            <span class="paragraph" style="margin-bottom: 2vh;">LOGIN</span>
+            <div class="d-flex flex-column">
+                <input @bind="user.Email" type="text" class="form-control" placeholder="email" required>
+                <div style="position: relative;">
+                    <input @bind="user.Password" type="@(ToglePassword ? "password" : "text")" class="form-control" placeholder="password" required>
+                    @if (ToglePassword)
+                    {
+                        <img @onclick="()=>ToglePassword=!ToglePassword" src="/source/icons/eye slash.svg" alt="hiden">
+                    } else
+                    {
+                        <img @onclick="()=>ToglePassword=!ToglePassword" src="/source/icons/eye.svg" alt="show">    
+                    }
+                </div>
+                <button style="border: none; background-color: transparent">
+                    <span @onclick="ForgotPass" style="margin-top: 1vh; margin-bottom: 3vh;">forgot the password?</span>
+                </button>
+            </div>
+            <button @onclick="HandleLogin" class="btn-purple"><span>LOGIN</span></button>
+            <span style="font-weight: 500;">or</span>
+            <a href="/registration">create new account</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+@code {
+    [Parameter]
+    public EventCallback ForgotPass { get; set; }
+    private bool ToglePassword = false;
+    UserLoginDTO user = new();
+
+    private async Task HandleLogin()
+    {
+        var result = await Http.PostAsJsonAsync("api/Auth/login", user);
+        if (result.IsSuccessStatusCode)
+        {
+            var token = await result.Content.ReadAsStringAsync();
+
+            await LocalStorage.SetItemAsync("token", token);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+
+            NavManager.NavigateTo("/");
+        }
+    }
+}
