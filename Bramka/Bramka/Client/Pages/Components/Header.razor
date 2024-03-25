@@ -1,10 +1,15 @@
 ﻿@inject NavigationManager nav
     <header class="justify-content-between align-items-center ps-5 pe-5 pt-4 pb-4">
-        <span style="color: #8B44FF;">BRAVO TEAM</span>
-        <div class="d-flex align-items-center">
-            <img @onclick="@(()=>nav.NavigateTo(""))" class="me-5" src="/source/icons/Qr Code.svg" alt="home page">
-            <img @onclick="@(()=>nav.NavigateTo("/profile"))" style="margin-top: 5px;" src="/source/icons/User.svg" alt="user profile">
-        </div>
+        <a href="/" style="color: #8B44FF;text-decoration:none;font-size:40px;">BRAVO TEAM</a>
+
+        <AuthorizeView>
+            <Authorized>
+                <div class="d-flex align-items-center">
+                    <img @onclick="@(()=>nav.NavigateTo("/auth"))" class="me-5" src="/source/icons/Qr Code.svg" alt="home page">
+                    <img @onclick="@(()=>nav.NavigateTo("/profile"))" style="margin-top: 5px;" src="/source/icons/User.svg" alt="user profile">
+                </div>
+            </Authorized>
+        </AuthorizeView>
     </header>
     <div>
     <div class="mobile-header">

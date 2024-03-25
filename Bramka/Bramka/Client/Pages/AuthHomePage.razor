@@ -1,5 +1,5 @@
 ﻿@page "/auth"
-@attribute [Authorize(Roles = "User Admin")]
+@attribute [Authorize]
 @inject NavigationManager nav
 <div class="style-wrapper">
     <Header/>
@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <div class="instruction justify-content-between block">
+    <div class="instruction justify-content-between block" style="padding-top: 40px;margin-bottom:0px;">
         <div><span>1. Lorem ipsum dolor sit.</span></div>
         <div class="ms-2 me-2"><span>2. Lorem ipsum dolor sit amet consectetur adipisicing elit.</span></div>
         <div><span>3. Lorem ipsum dolor sit.</span></div>

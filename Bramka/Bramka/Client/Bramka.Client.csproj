@@ -45,11 +45,13 @@
 		<Watch Remove="Pages\Components\ProfileNav.razor.scss" />
 		<Watch Remove="Pages\Components\RegistrationForm.razor.scss" />
 		<Watch Remove="Pages\Components\RestorePasswordForm.razor.scss" />
+		<Watch Remove="Pages\ConfirmationPage.razor.scss" />
 		<Watch Remove="Pages\History.razor.scss" />
 		<Watch Remove="Pages\Index.razor.scss" />
 		<Watch Remove="Pages\Login.razor.scss" />
 		<Watch Remove="Pages\Profile.razor.scss" />
 		<Watch Remove="Pages\Registration.razor.scss" />
+		<Watch Remove="Pages\ResetPasswordPage.razor.scss" />
 		<Watch Remove="Pages\Statistic.razor.scss" />
 		<Content Include="Pages\AuthHomePage.razor.scss" />
 		<Content Include="Pages\Components\Header.razor.scss" />
@@ -78,28 +80,28 @@
 	  <None Include="wwwroot\source\icons\User.svg" />
 	</ItemGroup>
 	
-		<Target Name="CheckForNpm" BeforeTargets="RunNpmInstall">
-		<Exec Command="npm --version" ContinueOnError="true">
+	<!--<Target Name="CheckForNpm" BeforeTargets="RunNpmInstall">
+		<Exec Command="npm -version" ContinueOnError="true">
 			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
 		</Exec>
 		<Error Condition="'$(ErrorCode)' != '0'" Text="NPM is required to build this project." />
 	</Target>
 	
 	
-		<Target Name="RunNpmInstall" BeforeTargets="CompileScopedScss" Inputs="package.json" Outputs="$(NpmLastInstall)">
+	<Target Name="RunNpmInstall" BeforeTargets="CompileScopedScss" Inputs="package.json" Outputs="$(NpmLastInstall)">
 		<Exec Command="npm install" />
 		<Touch Files="$(NpmLastInstall)" AlwaysCreate="true" />
 	</Target>
 	
 	
-		<Target Name="CompileScopedScss" BeforeTargets="Compile">
+	<Target Name="CompileScopedScss" BeforeTargets="Compile">
 		<ItemGroup>
 			<ScopedScssFiles Include="Pages/**/*.razor.scss" />
 			<ScopedScssFiles Include="Shared/**/*.razor.scss" />
 		</ItemGroup>
 
-		<Exec Command="npm run sass -- %(ScopedScssFiles.Identity) %(relativedir)%(filename).css" />
-	</Target>
+		<Exec Command="npm run sass - %(ScopedScssFiles.Identity) %(relativedir)%(filename).css" />
+	</Target>-->
 	
 
 </Project>
