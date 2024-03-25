@@ -1,10 +1,14 @@
 ﻿@page "/"
 @inject NavigationManager nav
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthStateProvider
+@inject HttpClient HttpClient
 <PageTitle>Index</PageTitle>
 
 <div class="style-wrapper">
 
     <Header/>
+
     <div>
         <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor, recusandae.</h1>
         <div class="description-mobile">
@@ -12,8 +16,15 @@
         </div>
     </div>
     <div class="buttons d-flex flex-column">
-        <button @onclick="@(()=>nav.NavigateTo("/login"))" class="btn-purple"><span>LOGIN</span></button>
-        <button @onclick="@(()=>nav.NavigateTo("/registration"))" class="btn-purple"><span>REGISTRATION</span></button>
+        <AuthorizeView>
+            <Authorized>
+                <button @onclick="Logout" class="btn-purple"><span>LOGOUT</span></button>
+            </Authorized>
+            <NotAuthorized>
+                <button @onclick="@(()=>nav.NavigateTo("/login"))" class="btn-purple"><span>LOGIN</span></button>
+                <button @onclick="@(()=>nav.NavigateTo("/registration"))" class="btn-purple"><span>REGISTRATION</span></button>
+            </NotAuthorized>
+        </AuthorizeView>
     </div>
     <div class="info">
         <a href="">get more info</a>
@@ -22,5 +33,14 @@
         <div class="horizontal"><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, assumenda earum. Sint dicta vel doloribus, facere reiciendis perferendis tenetur laborum incidunt maiores assumenda possimus. Libero vero saepe atque itaque aspernatur!</span></div>
         <div class="vertical"><span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus ducimus nam quod explicabo rem voluptate nisi minima corrupti qui et ad alias, recusandae repudiandae ipsum ipsam! Accusamus rem assumenda eius?</span></div>
     </div>
-
 </div>
+
+@code {
+    async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("token");
+        await AuthStateProvider.GetAuthenticationStateAsync();
+
+        await HttpClient.PostAsync(HttpClient.BaseAddress + "api/Auth/delete/refresh-token", null);
+    }
+}
