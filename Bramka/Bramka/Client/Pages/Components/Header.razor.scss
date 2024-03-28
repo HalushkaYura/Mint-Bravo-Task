@@ -35,6 +35,12 @@
         }
     }
 }
+@media screen and (max-width: 372px) {
+    .logo{
+        font-size:25px;
+    }
+}
+
 @media screen and (max-width: 500px) {
     .collapse, .collapsing {
         .collapse-menu {

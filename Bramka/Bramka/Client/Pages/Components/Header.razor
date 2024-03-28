@@ -12,9 +12,13 @@
         </AuthorizeView>
     </header>
     <div>
-    <div class="mobile-header">
-        <span @onclick="@(()=>nav.NavigateTo(""))" style="color: #8B44FF;">BRAVO TEAM</span>
-        <img type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" src="/source/icons/Menu.svg" alt="menu">
+    <div class="mobile-header" style="justify-content:space-between;">
+        @* <span @onclick="@(()=>nav.NavigateTo("/auth"))" style="color: #8B44FF;">BRAVO TEAM</span> *@
+        <a href="/" style="color: #8B44FF;text-decoration:none;font-size:35px;margin-left:15px;" class="logo">BRAVO TEAM</a>
+        <div>
+            <img style="margin-right:10px;" @onclick="@(()=>nav.NavigateTo("/auth"))" src="/source/icons/Qr Code.svg" alt="home page">
+            <img type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" src="/source/icons/Menu.svg" alt="menu">
+        </div>
     </div>
     <div class="collapse" id="collapseExample">
         <div class="collapse-menu">

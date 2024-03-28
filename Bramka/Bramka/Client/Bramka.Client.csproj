@@ -80,8 +80,8 @@
 	  <None Include="wwwroot\source\icons\User.svg" />
 	</ItemGroup>
 	
-	<!--<Target Name="CheckForNpm" BeforeTargets="RunNpmInstall">
-		<Exec Command="npm -version" ContinueOnError="true">
+	<Target Name="CheckForNpm" BeforeTargets="RunNpmInstall">
+		<Exec Command="npm --version" ContinueOnError="true">
 			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
 		</Exec>
 		<Error Condition="'$(ErrorCode)' != '0'" Text="NPM is required to build this project." />
@@ -100,8 +100,8 @@
 			<ScopedScssFiles Include="Shared/**/*.razor.scss" />
 		</ItemGroup>
 
-		<Exec Command="npm run sass - %(ScopedScssFiles.Identity) %(relativedir)%(filename).css" />
-	</Target>-->
+		<Exec Command="npm run sass -- %(ScopedScssFiles.Identity) %(relativedir)%(filename).css" />
+	</Target>
 	
 
 </Project>

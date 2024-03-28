@@ -24,6 +24,11 @@
     height: 8vh !important;
   }
 }
+@media screen and (max-width: 372px) {
+  .logo {
+    font-size: 25px;
+  }
+}
 @media screen and (max-width: 500px) {
   .collapse .collapse-menu button, .collapsing .collapse-menu button {
     width: 75vw !important;
